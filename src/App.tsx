@@ -2,6 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import "./styles/App.css";
 import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
 import Index from "./pages/Index";
 import Play from "./pages/games/Play";
 import Game from "./pages/games/Game";
@@ -15,9 +16,11 @@ function App() {
     <>
       <Header />
       <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
         <Route element={<LockedRoute />}>
           <Route path="/" element={<Index />} />
-          <Route path="/login" element={<Login />} />
 
           <Route path="/play" element={<Play />} />
           <Route path="/game" element={<Game />} />

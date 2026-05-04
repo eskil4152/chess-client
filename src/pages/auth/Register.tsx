@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link, Navigate } from "react-router-dom";
-import login from "../../features/api/login";
 import { useAuth } from "../../providers/AuthProvider";
+import register from "../../features/api/register";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ export default function Register() {
     setLoading(true);
     setError("");
 
-    const data = await login(username, password);
+    const data = await register(username, password);
 
     if (data.status === 200) {
       navigate("/");

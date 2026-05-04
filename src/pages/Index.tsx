@@ -5,6 +5,8 @@ export default function Index() {
       <p>Welcome, user!</p>
       <p>Current ELO: 1000</p>
       <p>News?</p>
+
+      <h3>Find game</h3>
     </div>
   );
 }
