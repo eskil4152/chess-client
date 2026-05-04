@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 type WsMessage = {
   type: string;
@@ -21,11 +21,7 @@ type WebSocketContextType = {
 
 const WebSocketContext = createContext<WebSocketContextType | null>(null);
 
-export default function WebSocketProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function WebSocketProvider() {
   const navigate = useNavigate();
 
   const wsRef = useRef<WebSocket | null>(null);
@@ -100,7 +96,7 @@ export default function WebSocketProvider({
 
   return (
     <WebSocketContext.Provider value={{ connected, sendJson, subscribe }}>
-      {children}
+      <Outlet />
     </WebSocketContext.Provider>
   );
 }

@@ -10,6 +10,7 @@ import User from "./pages/user/User";
 import GameHistory from "./pages/user/GameHistory";
 import Header from "./components/Header";
 import LockedRoute from "./components/LockedRoute";
+import WebSocketProvider from "./providers/WebSocketProvider";
 
 function App() {
   return (
@@ -22,8 +23,10 @@ function App() {
         <Route element={<LockedRoute />}>
           <Route path="/" element={<Index />} />
 
-          <Route path="/play" element={<Play />} />
-          <Route path="/game" element={<Game />} />
+          <Route element={<WebSocketProvider />}>
+            <Route path="/play" element={<Play />} />
+            <Route path="/game" element={<Game />} />
+          </Route>
 
           <Route path="/user" element={<User />} />
           <Route path="/game-history" element={<GameHistory />} />
