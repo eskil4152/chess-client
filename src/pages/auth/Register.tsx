@@ -1,15 +1,19 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import login from "../features/api/login";
+import { useNavigate, Link, Navigate } from "react-router-dom";
+import login from "../../features/api/login";
+import { useAuth } from "../../providers/AuthProvider";
 
-export default function Login() {
+export default function Register() {
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  if (user) return <Navigate to="/" replace />;
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -30,12 +34,12 @@ export default function Login() {
 
   return (
     <div>
-      <h1>Log In</h1>
+      <h1>Register</h1>
 
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Username / Email"
+          placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
@@ -48,7 +52,7 @@ export default function Login() {
         />
 
         <button type="submit" disabled={loading}>
-          {loading ? "Logging in…" : "Log In"}
+          {loading ? "Registering…" : "Register"}
         </button>
 
         <button
@@ -61,7 +65,7 @@ export default function Login() {
 
       <hr />
 
-      <Link to="/register">Register</Link>
+      <Link to="/login">Log In</Link>
 
       {error && <p>{error}</p>}
     </div>

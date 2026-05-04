@@ -1,12 +1,12 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import "./styles/App.css";
-import Login from "./pages/Login";
+import Login from "./pages/auth/Login";
 import Index from "./pages/Index";
-import Play from "./pages/Play";
-import Game from "./pages/Game";
-import User from "./pages/User";
-import GameHistory from "./pages/GameHistory";
+import Play from "./pages/games/Play";
+import Game from "./pages/games/Game";
+import User from "./pages/user/User";
+import GameHistory from "./pages/user/GameHistory";
 import Header from "./components/Header";
 import LockedRoute from "./components/LockedRoute";
 
