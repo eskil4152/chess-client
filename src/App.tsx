@@ -7,19 +7,23 @@ import Play from "./pages/Play";
 import Game from "./pages/Game";
 import User from "./pages/User";
 import GameHistory from "./pages/GameHistory";
+import Header from "./features/Header";
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Index />} />
-      <Route path="/login" element={<Login />} />
+    <>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/login" element={<Login />} />
 
-      <Route path="/play" element={<Play />} />
-      <Route path="/game" element={<Game />} />
+        <Route path="/play" element={<Play />} />
+        <Route path="/game" element={<Game />} />
 
-      <Route path="/user" element={<User />} />
-      <Route path="/game-history" element={<GameHistory />} />
-    </Routes>
+        <Route path="/user" element={<User />} />
+        <Route path="/game-history" element={<GameHistory />} />
+      </Routes>
+    </>
   );
 }
 
