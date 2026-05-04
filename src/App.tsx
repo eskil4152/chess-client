@@ -7,7 +7,7 @@ import Play from "./pages/Play";
 import Game from "./pages/Game";
 import User from "./pages/User";
 import GameHistory from "./pages/GameHistory";
-import Header from "./features/Header";
+import Header from "./components/Header";
 
 function App() {
   return (

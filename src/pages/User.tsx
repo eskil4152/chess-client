@@ -1,11 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 import useLoading from "../utils/useLoading";
 import getUser from "../features/api/getUser";
-
-type UserData = {
-  username: string;
-  bio?: string;
-};
+import { UserDataType } from "../types/UserType";
 
 export default function User() {
   const [searchParams] = useSearchParams();
@@ -23,12 +19,18 @@ export default function User() {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error occurred</div>;
 
-  const user = response?.data as UserData;
+  const user = response?.data as UserDataType;
 
   return (
     <div>
       <p>User page</p>
       {user?.username}
+
+      <p>Biography</p>
+      {user?.bio}
+
+      <p>ELO</p>
+      {user?.elo}
     </div>
   );
 }
