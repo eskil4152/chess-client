@@ -34,7 +34,7 @@ export default function WebSocketProvider({
 
   const [connected, setConnected] = useState(false);
 
-  const wsUrl = process.env.WS_API_URL;
+  const wsUrl = process.env.REACT_WS_API_URL;
 
   const subscribe = useCallback((listener: (event: WsMessage) => void) => {
     listenersRef.current.add(listener);

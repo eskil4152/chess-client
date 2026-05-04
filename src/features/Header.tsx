@@ -16,7 +16,7 @@ export default function Header() {
       </div>
 
       <div className="navRight">
-        <Link to="/user">{user.username}</Link>
+        <Link to={`/user?username=${user.username}`}>{user.username}</Link>
       </div>
     </header>
   );

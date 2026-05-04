@@ -35,11 +35,9 @@ export default function AuthProvider({
       } catch {
         sessionStorage.removeItem("auth");
       }
-      return;
     }
 
-    const url = process.env.APP_API_URL;
-
+    const url = process.env.REACT_APP_API_URL;
     if (!url) return;
 
     fetch(`${url}/api/auth`, {
@@ -54,6 +52,9 @@ export default function AuthProvider({
         if (data) {
           sessionStorage.setItem("auth", JSON.stringify(data));
           setUser(data);
+        } else {
+          setUser(null);
+          sessionStorage.removeItem("auth");
         }
       })
       .catch(() => {});
