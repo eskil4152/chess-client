@@ -1,25 +1,25 @@
-import React from 'react';
-import logo from './assets/logo.svg';
-import './styles/App.css';
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import "./styles/App.css";
+import Login from "./pages/Login";
+import Index from "./pages/Index";
+import Play from "./pages/Play";
+import Game from "./pages/Game";
+import User from "./pages/User";
+import GameHistory from "./pages/GameHistory";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path="/" element={<Index />} />
+      <Route path="/login" element={<Login />} />
+
+      <Route path="/play" element={<Play />} />
+      <Route path="/game" element={<Game />} />
+
+      <Route path="/user" element={<User />} />
+      <Route path="/game-history" element={<GameHistory />} />
+    </Routes>
   );
 }
 
