@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import login from "../features/api/login";
 
-export default function Login() {
+export default function Register() {
   const navigate = useNavigate();
 
   const [username, setUsername] = useState("");
@@ -30,7 +30,7 @@ export default function Login() {
 
   return (
     <div>
-      <h1>Log In</h1>
+      <h1>Register</h1>
 
       <form onSubmit={handleSubmit}>
         <input
@@ -48,7 +48,7 @@ export default function Login() {
         />
 
         <button type="submit" disabled={loading}>
-          {loading ? "Logging in…" : "Log In"}
+          {loading ? "Registering…" : "Register"}
         </button>
 
         <button
@@ -61,7 +61,7 @@ export default function Login() {
 
       <hr />
 
-      <Link to="/register">Register</Link>
+      <Link to="/login">Log In</Link>
 
       {error && <p>{error}</p>}
     </div>
