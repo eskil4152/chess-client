@@ -5,16 +5,11 @@ import React, {
   useMemo,
   useState,
 } from "react";
-
-export type AuthUser = {
-  userId: string;
-  username: string;
-  userRole: string;
-};
+import { AuthType } from "../types/http/AuthType";
 
 type AuthContextType = {
-  user: AuthUser | null;
-  setUser: (user: AuthUser | null) => void;
+  user: AuthType | null;
+  setUser: (user: AuthType | null) => void;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -24,7 +19,7 @@ export default function AuthProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [user, setUser] = useState<AuthUser | null>(null);
+  const [user, setUser] = useState<AuthType | null>(null);
 
   useEffect(() => {
     const stored = sessionStorage.getItem("auth");

@@ -1,7 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 import useLoading from "../utils/useLoading";
 import getUser from "../features/api/getUser";
-import { UserDataType } from "../types/UserType";
+import { UserDataType } from "../types/http/ProfileType";
 
 export default function User() {
   const [searchParams] = useSearchParams();
