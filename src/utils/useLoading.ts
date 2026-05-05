@@ -1,6 +1,6 @@
 "use client";
 
-import { DependencyList, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface UseLoadingResult<T> {
   loading: boolean;
@@ -11,13 +11,12 @@ interface UseLoadingResult<T> {
 
 export default function useLoading<T>(
   loadingFunction: () => Promise<T>,
-  deps: DependencyList = [],
 ): UseLoadingResult<T> {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<unknown>();
   const [response, setResponse] = useState<T>();
 
-  async function load() {
+  const load = useCallback(async () => {
     try {
       setLoading(true);
       setResponse(await loadingFunction());
@@ -26,11 +25,11 @@ export default function useLoading<T>(
     } finally {
       setLoading(false);
     }
-  }
+  }, [loadingFunction]);
 
   useEffect(() => {
-    load();
-  }, deps);
+    void load();
+  }, [load]);
 
   return { loading, error, response, reload: load };
 }

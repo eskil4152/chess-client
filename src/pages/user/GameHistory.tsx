@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import useLoading from "../../utils/useLoading";
 import getGameHistory from "../../features/api/getGameHistory";
@@ -9,8 +10,7 @@ export default function GameHistory() {
   const username = searchParams.get("username");
 
   const { loading, error, response } = useLoading(
-    () => getGameHistory(username!),
-    [username],
+    useCallback(() => getGameHistory(username!), [username]),
   );
 
   if (!username) {

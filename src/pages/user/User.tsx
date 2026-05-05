@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import useLoading from "../../utils/useLoading";
 import getUser from "../../features/api/getUser";
@@ -13,8 +14,7 @@ export default function User() {
   const username = searchParams.get("username");
 
   const { loading, error, response } = useLoading(
-    () => getUser(username!),
-    [username],
+    useCallback(() => getUser(username!), [username]),
   );
 
   async function handleLogout() {

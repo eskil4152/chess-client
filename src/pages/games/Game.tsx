@@ -75,7 +75,7 @@ export default function Game() {
         }
       }
     });
-  }, [subscribe]);
+  }, [subscribe, color]);
 
   function onPieceDrop(from: string, to: string): boolean {
     const currentTurn = game.turn();
