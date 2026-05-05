@@ -6,9 +6,13 @@ import { WsGameStartedType } from "../../types/websocket/WsGameStartedType";
 import { WsGameStateType } from "../../types/websocket/WsGameStateType";
 
 export default function Play() {
-  const { subscribe } = useWebSocket();
+  const { subscribe, sendJson } = useWebSocket();
   const { user } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    sendJson({ type: "QUEUE" });
+  }, [sendJson]);
 
   useEffect(() => {
     return subscribe((msg) => {

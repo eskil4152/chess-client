@@ -55,6 +55,10 @@ export default function WebSocketProvider() {
       ws.onopen = () => {
         reconnectRef.current = 0;
         setConnected(true);
+        const ping = setInterval(() => {
+          if (ws.readyState === WebSocket.OPEN) ws.send(JSON.stringify({ type: "PING" }));
+        }, 20000);
+        ws.addEventListener("close", () => clearInterval(ping));
       };
 
       ws.onmessage = (event) => {
@@ -76,7 +80,7 @@ export default function WebSocketProvider() {
 
         if (!active) return;
 
-        const delay = Math.min(2000 * 2 ** reconnectRef.current, 30000);
+        const delay = Math.min(500 * 2 ** reconnectRef.current, 30000);
         reconnectRef.current++;
 
         setTimeout(connect, delay);
