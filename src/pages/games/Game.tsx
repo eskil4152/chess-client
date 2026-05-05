@@ -51,12 +51,15 @@ export default function Game() {
 
       if (msg.type === "GAME_ENDED") {
         const event = msg as WsGameEndedType;
-        const labels: Record<string, string> = {
+        const winner: Record<string, string> = {
           WHITE_WIN: "White wins",
           BLACK_WIN: "Black wins",
-          DRAW: "Draw",
         };
-        setResult(labels[event.status] ?? "Game over");
+        if (event.status === "DRAW") {
+          setResult(`Draw by ${event.endedBy}`);
+        } else {
+          setResult(`${winner[event.status] ?? "Game over"} by ${event.endedBy}`);
+        }
       }
     });
   }, [subscribe]);
@@ -77,6 +80,18 @@ export default function Game() {
     }
   }
 
+  function resign() {
+    try {
+      sendJson({
+        type: "RESIGN",
+        gameId,
+      });
+      return true;
+    } catch {
+      // foobar
+    }
+  }
+
   return (
     <GameCard
       game={game}
@@ -85,6 +100,7 @@ export default function Game() {
       whiteUsername={players != null ? players.white : "White"}
       blackUsername={players != null ? players.black : "Black"}
       onPieceDrop={onPieceDrop}
+      resign={resign}
     />
   );
 }

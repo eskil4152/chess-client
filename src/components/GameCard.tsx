@@ -8,6 +8,7 @@ type GameCardProps = {
   whiteUsername: string;
   blackUsername: string;
   onPieceDrop: (from: string, to: string) => boolean;
+  resign: () => void;
 };
 
 export default function GameCard({
@@ -17,6 +18,7 @@ export default function GameCard({
   whiteUsername,
   blackUsername,
   onPieceDrop,
+  resign,
 }: GameCardProps) {
   const isWhite = color === "white";
   const playerUsername = isWhite ? whiteUsername : blackUsername;
@@ -35,6 +37,9 @@ export default function GameCard({
           arePiecesDraggable={!result}
         />
       </div>
+
+      <button onClick={resign}>Resign</button>
+      <button>Propose draw</button>
 
       <div>{playerUsername}</div>
     </div>
