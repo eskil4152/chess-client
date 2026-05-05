@@ -22,13 +22,16 @@
   },
   "devDependencies": {
     "prettier": "^3.8.3",
+    "wrangler": "^4.88.0",
     "yaml": "^2.8.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "npm run build && wrangler deploy",
+    "preview": "npm run build && wrangler dev"
   },
   "eslintConfig": {
     "extends": [
