@@ -20,7 +20,7 @@ export default function GamePreviewCard({
   else result = "Draw";
 
   return (
-    <div key={gameId}>
+    <div key={gameId} style={{ border: `4px solid black` }}>
       <p>White: {white}</p>
       <p>Black: {black}</p>
       <p>Result: {result}</p>

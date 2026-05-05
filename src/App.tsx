@@ -29,7 +29,7 @@ function App() {
           </Route>
 
           <Route path="/user" element={<User />} />
-          <Route path="/game-history" element={<GameHistory />} />
+          <Route path="/games/user" element={<GameHistory />} />
         </Route>
       </Routes>
     </>

@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import useLoading from "../../utils/useLoading";
 import getUser from "../../features/api/getUser";
 import { UserDataType } from "../../types/http/ProfileType";
@@ -31,6 +31,8 @@ export default function User() {
 
       <p>ELO</p>
       {user?.elo}
+
+      <Link to={`/games/user?username=${user.username}`}>Games history</Link>
     </div>
   );
 }

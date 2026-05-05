@@ -1,12 +1,16 @@
+import { useAuth } from "../providers/AuthProvider";
+import { Link } from "react-router-dom";
+
 export default function Index() {
+  const { user } = useAuth();
+
   return (
     <div>
-      <h1>Home page</h1>
-      <p>Welcome, user!</p>
-      <p>Current ELO: 1000</p>
-      <p>News?</p>
+      <h2>Welcome, {user?.username}!</h2>
 
-      <h3>Find game</h3>
+      <Link to="/play">
+        <h3>Find game</h3>
+      </Link>
     </div>
   );
 }
