@@ -29,8 +29,6 @@ export default function AuthProvider({
     if (stored) {
       try {
         setUser(JSON.parse(stored));
-        setLoading(false);
-        return;
       } catch {
         sessionStorage.removeItem("auth");
       }

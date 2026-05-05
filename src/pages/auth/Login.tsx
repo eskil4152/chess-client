@@ -5,7 +5,7 @@ import { useAuth } from "../../providers/AuthProvider";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -20,11 +20,13 @@ export default function Login() {
     setLoading(true);
     setError("");
 
-    const data = await login(username, password);
+    const res = await login(username, password);
 
-    if (data.status === 200) {
+    if (res.status === 200) {
+      const data = await res.json();
+      setUser(data);
       navigate("/");
-    } else if (data.status === 401) {
+    } else if (res.status === 401) {
       setError("Credentials not found.");
     } else {
       setError("An error occurred");

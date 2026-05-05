@@ -6,4 +6,6 @@ export type WsGameStateType = {
   blackId: string;
   blackUsername: string;
   moves: string[];
+  whiteDrawOffer: boolean;
+  blackDrawOffer: boolean;
 };
