@@ -1,9 +1,40 @@
-export default GameHistory;
+import { useSearchParams } from "react-router-dom";
+import useLoading from "../../utils/useLoading";
+import getGameHistory from "../../features/api/getGameHistory";
+import { GamePreviewType } from "../../types/http/GamePreviewType";
+import GamePreviewCard from "../../components/GamePreviewCard";
 
-function GameHistory() {
+export default function GameHistory() {
+  const [searchParams] = useSearchParams();
+  const username = searchParams.get("username");
+
+  const { loading, error, response } = useLoading(
+    () => getGameHistory(username!),
+    [username],
+  );
+
+  if (!username) {
+    return <div>No username provided</div>;
+  }
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error occurred</div>;
+
+  const gameHistory = response?.data as GamePreviewType[];
+
   return (
     <div>
-      <p>Game history page</p>
+      <p>{username}s last games</p>
+      {gameHistory.length > 0
+        ? gameHistory.map((game: GamePreviewType) => (
+            <GamePreviewCard
+              gameId={game.gameId}
+              white={game.whiteUsername}
+              black={game.blackUsername}
+              status={game.status}
+            />
+          ))
+        : "Player has no games :("}
     </div>
   );
 }

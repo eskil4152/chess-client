@@ -1,4 +1,4 @@
-export type GameStatus = "ONGOING" | "WHITE_WIN" | "BLACK_WIN" | "DRAW";
+import { GameStatus } from "../http/GameStatus";
 
 export type WsGameEndedType = {
   type: "GAME_ENDED";
