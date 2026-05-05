@@ -21,7 +21,8 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
-    "prettier": "^3.8.3"
+    "prettier": "^3.8.3",
+    "yaml": "^2.8.4"
   },
   "scripts": {
     "start": "react-scripts start",
