@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link, Navigate } from "react-router-dom";
 import login from "../../features/api/login";
 import { useAuth } from "../../providers/AuthProvider";
+import { AuthType } from "../../types/http/AuthType";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -23,7 +24,8 @@ export default function Login() {
     const res = await login(username, password);
 
     if (res.status === 200) {
-      const data = await res.json();
+      const data: AuthType = await res.json();
+
       setUser(data);
       navigate("/");
     } else if (res.status === 401) {

@@ -1,9 +1,14 @@
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import useLoading from "../../utils/useLoading";
 import getUser from "../../features/api/getUser";
 import { UserDataType } from "../../types/http/ProfileType";
+import logout from "../../features/api/logout";
+import { useAuth } from "../../providers/AuthProvider";
 
 export default function User() {
+  const navigate = useNavigate();
+  const { setUser } = useAuth();
+
   const [searchParams] = useSearchParams();
   const username = searchParams.get("username");
 
@@ -11,6 +16,13 @@ export default function User() {
     () => getUser(username!),
     [username],
   );
+
+  async function handleLogout() {
+    await logout();
+    sessionStorage.removeItem("auth");
+    setUser(null);
+    navigate("/login");
+  }
 
   if (!username) {
     return <div>No username provided</div>;
@@ -33,6 +45,10 @@ export default function User() {
       {user?.elo}
 
       <Link to={`/games/user?username=${user.username}`}>Games history</Link>
+
+      <br />
+
+      <button onClick={handleLogout}>Log out</button>
     </div>
   );
 }

@@ -4,8 +4,6 @@ import { Link } from "react-router-dom";
 export default function Header() {
   const { user } = useAuth();
 
-  console.log("header user: ", user);
-
   if (!user) return null;
 
   return (
