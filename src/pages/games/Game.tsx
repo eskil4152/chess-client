@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Chess } from "chess.js";
-import { Chessboard } from "react-chessboard";
 import { useWebSocket } from "../../providers/WebSocketProvider";
 import { WsMoveType } from "../../types/websocket/WsMoveType";
 import { WsGameEndedType } from "../../types/websocket/WsGameEndedType";
 import { WsGameStateType } from "../../types/websocket/WsGameStateType";
+import GameCard from "../../components/GameCard";
 
 type GameSession = {
   gameId: string;
@@ -18,14 +18,23 @@ export default function Game() {
   const { gameId, color } = session;
 
   const [game, setGame] = useState(new Chess());
+  const [players, setPlayers] = useState<{
+    white: string;
+    black: string;
+  } | null>(null);
   const [result, setResult] = useState<string | null>(null);
 
   useEffect(() => {
     return subscribe((msg) => {
       if (msg.type === "GAME_STATE") {
         const event = msg as WsGameStateType;
+        setPlayers({ white: event.whiteUsername, black: event.blackUsername });
         const restored = new Chess();
-        event.moves.forEach((m) => { try { restored.move(m); } catch {} });
+        event.moves.forEach((m) => {
+          try {
+            restored.move(m);
+          } catch {}
+        });
         setGame(new Chess(restored.fen()));
       }
 
@@ -33,7 +42,9 @@ export default function Game() {
         const event = msg as WsMoveType;
         setGame((prev) => {
           const next = new Chess(prev.fen());
-          try { next.move(event.move); } catch {}
+          try {
+            next.move(event.move);
+          } catch {}
           return next;
         });
       }
@@ -55,7 +66,11 @@ export default function Game() {
     try {
       const move = next.move({ from, to, promotion: "q" });
       setGame(next);
-      sendJson({ type: "MOVE", gameId, move: move.from + move.to + (move.promotion ?? "") });
+      sendJson({
+        type: "MOVE",
+        gameId,
+        move: move.from + move.to + (move.promotion ?? ""),
+      });
       return true;
     } catch {
       return false;
@@ -63,14 +78,13 @@ export default function Game() {
   }
 
   return (
-    <div style={{ width: 500 }}>
-      {result && <p>{result}</p>}
-      <Chessboard
-        position={game.fen()}
-        boardOrientation={color}
-        onPieceDrop={onPieceDrop}
-        arePiecesDraggable={!result}
-      />
-    </div>
+    <GameCard
+      game={game}
+      result={result}
+      color={color}
+      whiteUsername={players != null ? players.white : "White"}
+      blackUsername={players != null ? players.black : "Black"}
+      onPieceDrop={onPieceDrop}
+    />
   );
 }
