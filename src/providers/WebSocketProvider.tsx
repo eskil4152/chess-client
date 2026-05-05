@@ -69,7 +69,8 @@ export default function WebSocketProvider() {
         } catch {}
       };
 
-      ws.onclose = () => {
+      ws.onclose = (event) => {
+        console.warn("WebSocket closed", { code: event.code, reason: event.reason, wasClean: event.wasClean });
         setConnected(false);
         wsRef.current = null;
 
@@ -81,7 +82,8 @@ export default function WebSocketProvider() {
         setTimeout(connect, delay);
       };
 
-      ws.onerror = () => {
+      ws.onerror = (event) => {
+        console.error("WebSocket error", event);
         setConnected(false);
       };
     }

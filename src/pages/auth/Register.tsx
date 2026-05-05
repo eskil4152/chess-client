@@ -22,7 +22,7 @@ export default function Register() {
 
     const data = await register(username, password);
 
-    if (data.status === 200) {
+    if (data.status === 201) {
       navigate("/");
     } else if (data.status === 401) {
       setError("Credentials not found.");
