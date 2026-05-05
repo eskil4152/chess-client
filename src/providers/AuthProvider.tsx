@@ -10,6 +10,7 @@ import { AuthType } from "../types/http/AuthType";
 type AuthContextType = {
   user: AuthType | null;
   setUser: (user: AuthType | null) => void;
+  loading: boolean;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -20,6 +21,7 @@ export default function AuthProvider({
   children: React.ReactNode;
 }) {
   const [user, setUser] = useState<AuthType | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const stored = sessionStorage.getItem("auth");
@@ -27,13 +29,18 @@ export default function AuthProvider({
     if (stored) {
       try {
         setUser(JSON.parse(stored));
+        setLoading(false);
+        return;
       } catch {
         sessionStorage.removeItem("auth");
       }
     }
 
     const url = process.env.REACT_APP_API_URL;
-    if (!url) return;
+    if (!url) {
+      setLoading(false);
+      return;
+    }
 
     fetch(`${url}/api/auth`, {
       method: "GET",
@@ -52,10 +59,11 @@ export default function AuthProvider({
           sessionStorage.removeItem("auth");
         }
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
 
-  const value = useMemo(() => ({ user, setUser }), [user]);
+  const value = useMemo(() => ({ user, setUser, loading }), [user, loading]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
