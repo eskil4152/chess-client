@@ -16,6 +16,8 @@ export default function Game() {
   const [game, setGame] = useState(new Chess());
   const [result, setResult] = useState<string | null>(null);
   const [drawOffers, setDrawOffers] = useState({ white: false, black: false });
+  const [selectedSquare, setSelectedSquare] = useState<string | null>(null);
+  const [lastMove, setLastMove] = useState<{ from: string; to: string } | null>(null);
 
   const color: "white" | "black" | null = gameState
     ? gameState.whiteId === user!.userId
@@ -52,6 +54,8 @@ export default function Game() {
       if (msg.type === "MOVE") {
         const { move } = msg as WsMoveType;
         setDrawOffers({ white: false, black: false });
+        setSelectedSquare(null);
+        setLastMove({ from: move.slice(0, 2), to: move.slice(2, 4) });
         setGame((prev) => {
           const next = new Chess(prev.fen());
           try {
@@ -83,6 +87,20 @@ export default function Game() {
     });
   }, [subscribe]);
 
+  function onSquareClick(square: string) {
+    if (!gameState || !color || !connected || result) return;
+    if (selectedSquare) {
+      if (selectedSquare === square) { setSelectedSquare(null); return; }
+      const moved = onPieceDrop(selectedSquare, square);
+      setSelectedSquare(moved ? null : square);
+    } else {
+      const piece = game.get(square as any);
+      if (piece && ((color === "white" && piece.color === "w") || (color === "black" && piece.color === "b"))) {
+        setSelectedSquare(square);
+      }
+    }
+  }
+
   function onPieceDrop(from: string, to: string): boolean {
     if (!gameState || !color || !connected) return false;
     const turn = game.turn();
@@ -101,6 +119,7 @@ export default function Game() {
       });
       if (!sent) return false;
       setGame(next);
+      setLastMove({ from: move.from, to: move.to });
       return true;
     } catch {
       return false;
@@ -128,6 +147,9 @@ export default function Game() {
       whiteUsername={gameState.whiteUsername}
       blackUsername={gameState.blackUsername}
       onPieceDrop={onPieceDrop}
+      onSquareClick={onSquareClick}
+      selectedSquare={selectedSquare}
+      lastMove={lastMove}
       onDraw={onDraw}
       whiteDrawOffer={drawOffers.white}
       blackDrawOffer={drawOffers.black}

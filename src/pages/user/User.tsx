@@ -38,7 +38,7 @@ export default function User() {
         <p className="profile-elo">ELO: {user.elo}</p>
         {user.bio && <p className="profile-bio">{user.bio}</p>}
         <div className="profile-actions">
-          <Link to={`/games/user?username=${user.username}`} className="btn">Game history</Link>
+          <Link to={`/games/user?username=${user.username}`} className="btn btn-pill">Game history</Link>
         </div>
       </div>
       <button className="btn btn-danger" onClick={handleLogout}>Log out</button>

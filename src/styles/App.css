@@ -1,6 +1,7 @@
 :root {
   --bg-main: #A15C2A;
   --bg-secondary: #624C2B;
+  --color-pill: #3a3a5c;
 
   --text-main: #FFFFFF;
 }
@@ -66,4 +67,13 @@ a:hover {
 
 .btn-danger:hover {
   background: #8B1A1A;
+}
+
+.btn-pill {
+  background: var(--color-pill);
+  border-radius: 999px;
+}
+
+.btn-pill:hover {
+  background: var(--color-pill);
 }

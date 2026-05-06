@@ -1,3 +1,4 @@
+import React from "react";
 import { Chessboard } from "react-chessboard";
 import { Chess } from "chess.js";
 import "../styles/Game.css";
@@ -10,7 +11,10 @@ type GameCardProps = {
   blackUsername: string;
   whiteDrawOffer: boolean;
   blackDrawOffer: boolean;
+  selectedSquare: string | null;
+  lastMove: { from: string; to: string } | null;
   onPieceDrop: (from: string, to: string) => boolean;
+  onSquareClick: (square: string) => void;
   onDraw: () => void;
   resign: () => void;
 };
@@ -23,7 +27,10 @@ export default function GameCard({
   blackUsername,
   whiteDrawOffer,
   blackDrawOffer,
+  selectedSquare,
+  lastMove,
   onPieceDrop,
+  onSquareClick,
   onDraw,
   resign,
 }: GameCardProps) {
@@ -32,6 +39,15 @@ export default function GameCard({
   const opponentUsername = isWhite ? blackUsername : whiteUsername;
   const opponentOffered = isWhite ? blackDrawOffer : whiteDrawOffer;
   const drawLabel = opponentOffered ? "Accept draw" : "Offer draw";
+
+  const squareStyles: Record<string, React.CSSProperties> = {};
+  if (lastMove) {
+    squareStyles[lastMove.from] = { backgroundColor: "rgba(100, 200, 100, 0.45)" };
+    squareStyles[lastMove.to] = { backgroundColor: "rgba(100, 200, 100, 0.45)" };
+  }
+  if (selectedSquare) {
+    squareStyles[selectedSquare] = { backgroundColor: "rgba(255, 255, 100, 0.55)" };
+  }
 
   return (
     <div className="game">
@@ -43,6 +59,8 @@ export default function GameCard({
           position={game.fen()}
           boardOrientation={color}
           onPieceDrop={onPieceDrop}
+          onSquareClick={onSquareClick}
+          customSquareStyles={squareStyles}
           arePiecesDraggable={!result}
         />
       </div>
