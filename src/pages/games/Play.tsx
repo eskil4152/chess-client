@@ -1,13 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useWebSocket } from "../../providers/WebSocketProvider";
 import joinQueue from "../../features/api/joinQueue";
 import leaveQueue from "../../features/api/leaveQueue";
 import getActiveGame from "../../features/api/getActiveGame";
 
+const DOTS = [".", "..", "..."];
+
 export default function Play() {
   const { subscribe } = useWebSocket();
   const navigate = useNavigate();
+  const [dotIndex, setDotIndex] = useState(0);
 
   useEffect(() => {
     getActiveGame().then(({ status }) => {
@@ -27,5 +30,15 @@ export default function Play() {
     });
   }, [subscribe, navigate]);
 
-  return <p>Searching for opponent…</p>;
+  useEffect(() => {
+    const id = setInterval(() => setDotIndex((i) => (i + 1) % DOTS.length), 500);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <div className="page">
+      <p>Searching for opponent{DOTS[dotIndex]}</p>
+      <button className="btn" onClick={() => navigate("/")}>Cancel</button>
+    </div>
+  );
 }

@@ -1,5 +1,6 @@
 import { Chessboard } from "react-chessboard";
 import { Chess } from "chess.js";
+import "../styles/Game.css";
 
 type GameCardProps = {
   game: Chess;
@@ -33,11 +34,11 @@ export default function GameCard({
   const drawLabel = opponentOffered ? "Accept draw" : "Offer draw";
 
   return (
-    <div>
-      <div>{opponentUsername}</div>
+    <div className="game">
+      <div className="game-player">{opponentUsername}</div>
 
-      <div style={{ width: 500 }}>
-        {result && <p>{result}</p>}
+      <div className="game-board-wrapper">
+        {result && <p className="game-result">{result}</p>}
         <Chessboard
           position={game.fen()}
           boardOrientation={color}
@@ -46,10 +47,12 @@ export default function GameCard({
         />
       </div>
 
-      <button onClick={resign} disabled={!!result}>Resign</button>
-      <button onClick={onDraw} disabled={!!result}>{drawLabel}</button>
+      <div className="game-player">{playerUsername}</div>
 
-      <div>{playerUsername}</div>
+      <div className="game-actions">
+        <button className="btn btn-danger" onClick={resign} disabled={!!result}>Resign</button>
+        <button className="btn" onClick={onDraw} disabled={!!result}>{drawLabel}</button>
+      </div>
     </div>
   );
 }

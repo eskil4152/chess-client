@@ -5,12 +5,9 @@ export default function Index() {
   const { user } = useAuth();
 
   return (
-    <div>
-      <h2>Welcome, {user?.username}!</h2>
-
-      <Link to="/play">
-        <h3>Find game</h3>
-      </Link>
+    <div className="page">
+      <h1>Welcome, {user?.username}!</h1>
+      <Link to="/play" className="btn">Find game</Link>
     </div>
   );
 }
