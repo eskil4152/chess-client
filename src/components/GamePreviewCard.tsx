@@ -5,6 +5,7 @@ type GamePreviewCardProps = {
   white: string;
   black: string;
   status: GameStatus;
+  user: string;
 };
 
 export default function GamePreviewCard({
@@ -12,18 +13,25 @@ export default function GamePreviewCard({
   white,
   black,
   status,
+  user,
 }: GamePreviewCardProps) {
   let result;
 
-  if (status === "WHITE_WIN") result = "White won";
-  else if (status === "BLACK_WIN") result = "Black won";
-  else result = "Draw";
+  if (status === "DRAW") {
+    result = "DRAW";
+  } else if (status === "WHITE_WIN") {
+    result = white === user ? "VICTORY" : "LOSS";
+  } else {
+    result = black === user ? "VICTORY" : "LOSS";
+  }
 
   return (
-    <div key={gameId} style={{ border: `4px solid black` }}>
-      <p>White: {white}</p>
-      <p>Black: {black}</p>
-      <p>Result: {result}</p>
+    <div key={gameId} className="game-card">
+      <div className="game-card-players">
+        <span>White: {white}</span>
+        <span>Black: {black}</span>
+      </div>
+      <span className="game-card-result">{result}</span>
     </div>
   );
 }

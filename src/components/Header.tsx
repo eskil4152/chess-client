@@ -1,5 +1,6 @@
 import { useAuth } from "../providers/AuthProvider";
 import { Link } from "react-router-dom";
+import "../styles/Header.css";
 
 export default function Header() {
   const { user } = useAuth();
@@ -8,12 +9,15 @@ export default function Header() {
 
   return (
     <header className="header">
-      <div className="navLeft">
+      <div className="headerLeft">
         <Link to="/">Home</Link>
+      </div>
+
+      <div className={"headerCenter"}>
         <Link to="/play">Play</Link>
       </div>
 
-      <div className="navRight">
+      <div className="headerRight">
         <Link to={`/user?username=${user.username}`}>{user.username}</Link>
       </div>
     </header>

@@ -1,5 +1,7 @@
+import React from "react";
 import { Chessboard } from "react-chessboard";
 import { Chess } from "chess.js";
+import "../styles/Game.css";
 
 type GameCardProps = {
   game: Chess;
@@ -9,7 +11,10 @@ type GameCardProps = {
   blackUsername: string;
   whiteDrawOffer: boolean;
   blackDrawOffer: boolean;
+  selectedSquare: string | null;
+  lastMove: { from: string; to: string } | null;
   onPieceDrop: (from: string, to: string) => boolean;
+  onSquareClick: (square: string) => void;
   onDraw: () => void;
   resign: () => void;
 };
@@ -22,7 +27,10 @@ export default function GameCard({
   blackUsername,
   whiteDrawOffer,
   blackDrawOffer,
+  selectedSquare,
+  lastMove,
   onPieceDrop,
+  onSquareClick,
   onDraw,
   resign,
 }: GameCardProps) {
@@ -32,24 +40,37 @@ export default function GameCard({
   const opponentOffered = isWhite ? blackDrawOffer : whiteDrawOffer;
   const drawLabel = opponentOffered ? "Accept draw" : "Offer draw";
 
-  return (
-    <div>
-      <div>{opponentUsername}</div>
+  const squareStyles: Record<string, React.CSSProperties> = {};
+  if (lastMove) {
+    squareStyles[lastMove.from] = { backgroundColor: "rgba(100, 200, 100, 0.45)" };
+    squareStyles[lastMove.to] = { backgroundColor: "rgba(100, 200, 100, 0.45)" };
+  }
+  if (selectedSquare) {
+    squareStyles[selectedSquare] = { backgroundColor: "rgba(255, 255, 100, 0.55)" };
+  }
 
-      <div style={{ width: 500 }}>
-        {result && <p>{result}</p>}
+  return (
+    <div className="game">
+      <div className="game-player">{opponentUsername}</div>
+
+      <div className="game-board-wrapper">
+        {result && <p className="game-result">{result}</p>}
         <Chessboard
           position={game.fen()}
           boardOrientation={color}
           onPieceDrop={onPieceDrop}
+          onSquareClick={onSquareClick}
+          customSquareStyles={squareStyles}
           arePiecesDraggable={!result}
         />
       </div>
 
-      <button onClick={resign} disabled={!!result}>Resign</button>
-      <button onClick={onDraw} disabled={!!result}>{drawLabel}</button>
+      <div className="game-player">{playerUsername}</div>
 
-      <div>{playerUsername}</div>
+      <div className="game-actions">
+        <button className="btn btn-danger" onClick={resign} disabled={!!result}>Resign</button>
+        <button className="btn" onClick={onDraw} disabled={!!result}>{drawLabel}</button>
+      </div>
     </div>
   );
 }
