@@ -1,28 +1,31 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useWebSocket } from "../../providers/WebSocketProvider";
-import { useAuth } from "../../providers/AuthProvider";
-import { WsGameStartedType } from "../../types/websocket/WsGameStartedType";
-import { WsGameStateType } from "../../types/websocket/WsGameStateType";
+import joinQueue from "../../features/api/joinQueue";
+import leaveQueue from "../../features/api/leaveQueue";
+import getActiveGame from "../../features/api/getActiveGame";
 
 export default function Play() {
   const { subscribe } = useWebSocket();
-  const { user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    return subscribe((msg) => {
-      if (msg.type !== "GAME_STARTED" && msg.type !== "GAME_STATE") return;
-      const event = msg as WsGameStartedType | WsGameStateType;
-      const color = event.whiteId === user!.userId ? "white" : "black";
-
-      sessionStorage.setItem(
-        "game",
-        JSON.stringify({ gameId: event.gameId, color }),
-      );
-      navigate("/game");
+    getActiveGame().then(({ status }) => {
+      if (status === 200) { navigate("/game"); return; }
+      joinQueue().then((res) => {
+        if (res.status === 409) navigate("/game");
+      });
     });
-  }, [subscribe, navigate, user]);
+    return () => {
+      void leaveQueue();
+    };
+  }, [navigate]);
+
+  useEffect(() => {
+    return subscribe((msg) => {
+      if (msg.type === "GAME_STARTED") navigate("/game");
+    });
+  }, [subscribe, navigate]);
 
   return <p>Searching for opponent…</p>;
 }

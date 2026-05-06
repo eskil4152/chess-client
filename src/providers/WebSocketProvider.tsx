@@ -15,7 +15,7 @@ type WsMessage = {
 
 type WebSocketContextType = {
   connected: boolean;
-  sendJson: (payload: unknown) => void;
+  sendJson: (payload: unknown) => boolean;
   subscribe: (listener: (event: WsMessage) => void) => () => void;
 };
 
@@ -37,10 +37,12 @@ export default function WebSocketProvider() {
     return () => listenersRef.current.delete(listener);
   }, []);
 
-  const sendJson = useCallback((payload: unknown) => {
+  const sendJson = useCallback((payload: unknown): boolean => {
     if (wsRef.current?.readyState === WebSocket.OPEN) {
       wsRef.current.send(JSON.stringify(payload));
+      return true;
     }
+    return false;
   }, []);
 
   useEffect(() => {
@@ -64,31 +66,24 @@ export default function WebSocketProvider() {
       ws.onmessage = (event) => {
         try {
           const data: WsMessage = JSON.parse(event.data);
-
-          if (data.type === "ERROR") {
-            if (data.code === 401) navigate("/login");
-          }
-
+          if (data.type === "ERROR" && data.code === 401) navigate("/login");
           listenersRef.current.forEach((l) => l(data));
         } catch {}
       };
 
-      ws.onclose = (event) => {
-        console.warn("WebSocket closed", { code: event.code, reason: event.reason, wasClean: event.wasClean });
-        setConnected(false);
-        wsRef.current = null;
-
+      ws.onclose = () => {
+        if (wsRef.current === ws) {
+          wsRef.current = null;
+          setConnected(false);
+        }
         if (!active) return;
-
         const delay = Math.min(500 * 2 ** reconnectRef.current, 30000);
         reconnectRef.current++;
-
         setTimeout(connect, delay);
       };
 
-      ws.onerror = (event) => {
-        console.error("WebSocket error", event);
-        setConnected(false);
+      ws.onerror = () => {
+        if (wsRef.current === ws) setConnected(false);
       };
     }
 
@@ -109,8 +104,6 @@ export default function WebSocketProvider() {
 
 export function useWebSocket() {
   const ctx = useContext(WebSocketContext);
-  if (!ctx) {
-    throw new Error("useWebSocket must be used inside WebSocketProvider");
-  }
+  if (!ctx) throw new Error("useWebSocket must be used inside WebSocketProvider");
   return ctx;
 }

@@ -1,96 +1,106 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Chess } from "chess.js";
 import { useWebSocket } from "../../providers/WebSocketProvider";
+import { useAuth } from "../../providers/AuthProvider";
 import { WsMoveType } from "../../types/websocket/WsMoveType";
 import { WsGameEndedType } from "../../types/websocket/WsGameEndedType";
-import { WsGameStateType } from "../../types/websocket/WsGameStateType";
+import { GameStateType } from "../../types/http/GameStateType";
 import GameCard from "../../components/GameCard";
-
-type GameSession = {
-  gameId: string;
-  color: "white" | "black";
-};
+import getActiveGame from "../../features/api/getActiveGame";
 
 export default function Game() {
-  const { subscribe, sendJson } = useWebSocket();
+  const { subscribe, sendJson, connected } = useWebSocket();
+  const { user } = useAuth();
 
-  const session: GameSession = JSON.parse(sessionStorage.getItem("game")!);
-  const { gameId, color } = session;
-
+  const [gameState, setGameState] = useState<GameStateType | null>(null);
   const [game, setGame] = useState(new Chess());
-  const [players, setPlayers] = useState<{
-    white: string;
-    black: string;
-  } | null>(null);
   const [result, setResult] = useState<string | null>(null);
   const [drawOffers, setDrawOffers] = useState({ white: false, black: false });
 
+  const color: "white" | "black" | null = gameState
+    ? gameState.whiteId === user!.userId
+      ? "white"
+      : "black"
+    : null;
+
+  const colorRef = useRef(color);
+  colorRef.current = color;
+
+  useEffect(() => {
+    if (!connected) return;
+    getActiveGame().then(({ status, data }) => {
+      if (status !== 200 || !data) return;
+      const state = data as GameStateType;
+      const chess = new Chess();
+      state.moves.forEach((m) => {
+        try {
+          chess.move(m);
+        } catch {}
+      });
+      setGameState(state);
+      setGame(chess);
+      setResult(null);
+      setDrawOffers({
+        white: state.whiteDrawOffer,
+        black: state.blackDrawOffer,
+      });
+    });
+  }, [connected]);
+
   useEffect(() => {
     return subscribe((msg) => {
-      if (msg.type === "GAME_STATE") {
-        const event = msg as WsGameStateType;
-        setPlayers({ white: event.whiteUsername, black: event.blackUsername });
-        setDrawOffers({
-          white: event.whiteDrawOffer,
-          black: event.blackDrawOffer,
-        });
-        const restored = new Chess();
-        event.moves.forEach((m) => {
-          try {
-            restored.move(m);
-          } catch {}
-        });
-        setGame(new Chess(restored.fen()));
-      }
-
-      if (msg.type === "OFFER_DRAW") {
-        const opponentColor = color === "white" ? "black" : "white";
-        setDrawOffers((prev) => ({ ...prev, [opponentColor]: true }));
-      }
-
       if (msg.type === "MOVE") {
-        const event = msg as WsMoveType;
+        const { move } = msg as WsMoveType;
         setDrawOffers({ white: false, black: false });
         setGame((prev) => {
           const next = new Chess(prev.fen());
           try {
-            next.move(event.move);
+            next.move(move);
           } catch {}
           return next;
         });
       }
 
+      if (msg.type === "OFFER_DRAW") {
+        const c = colorRef.current;
+        if (!c) return;
+        const opponent = c === "white" ? "black" : "white";
+        setDrawOffers((prev) => ({ ...prev, [opponent]: true }));
+      }
+
       if (msg.type === "GAME_ENDED") {
-        const event = msg as WsGameEndedType;
-        const winner: Record<string, string> = {
+        const { status, endedBy } = msg as WsGameEndedType;
+        const label: Record<string, string> = {
           WHITE_WIN: "White wins",
           BLACK_WIN: "Black wins",
         };
-        if (event.status === "DRAW") {
-          setResult(`Draw by ${event.endedBy}`);
-        } else {
-          setResult(
-            `${winner[event.status] ?? "Game over"} by ${event.endedBy}`,
-          );
-        }
+        setResult(
+          status === "DRAW"
+            ? `Draw by ${endedBy}`
+            : `${label[status] ?? "Game over"} by ${endedBy}`,
+        );
       }
     });
-  }, [subscribe, color]);
+  }, [subscribe]);
 
   function onPieceDrop(from: string, to: string): boolean {
-    const currentTurn = game.turn();
-    if ((color === "white" && currentTurn !== "w") || (color === "black" && currentTurn !== "b")) {
+    if (!gameState || !color || !connected) return false;
+    const turn = game.turn();
+    if (
+      (color === "white" && turn !== "w") ||
+      (color === "black" && turn !== "b")
+    )
       return false;
-    }
     const next = new Chess(game.fen());
     try {
       const move = next.move({ from, to, promotion: "q" });
-      setGame(next);
-      sendJson({
+      const sent = sendJson({
         type: "MOVE",
-        gameId,
+        gameId: gameState.gameId,
         move: move.from + move.to + (move.promotion ?? ""),
       });
+      if (!sent) return false;
+      setGame(next);
       return true;
     } catch {
       return false;
@@ -98,33 +108,25 @@ export default function Game() {
   }
 
   function onDraw() {
-    try {
-      sendJson({ type: "OFFER_DRAW", gameId });
-      setDrawOffers((prev) => ({ ...prev, [color]: true }));
-    } catch (error) {
-      console.error(error);
-    }
+    if (!gameState || !color || !connected) return;
+    sendJson({ type: "OFFER_DRAW", gameId: gameState.gameId });
+    setDrawOffers((prev) => ({ ...prev, [color]: true }));
   }
 
   function resign() {
-    try {
-      sendJson({
-        type: "RESIGN",
-        gameId,
-      });
-      return true;
-    } catch (error) {
-      console.error(error);
-    }
+    if (!gameState || !connected) return;
+    sendJson({ type: "RESIGN", gameId: gameState.gameId });
   }
+
+  if (!gameState || !color) return <p>Loading game…</p>;
 
   return (
     <GameCard
       game={game}
       result={result}
       color={color}
-      whiteUsername={players != null ? players.white : "White"}
-      blackUsername={players != null ? players.black : "Black"}
+      whiteUsername={gameState.whiteUsername}
+      blackUsername={gameState.blackUsername}
       onPieceDrop={onPieceDrop}
       onDraw={onDraw}
       whiteDrawOffer={drawOffers.white}

@@ -21,15 +21,13 @@ function App() {
         <Route path="/register" element={<Register />} />
 
         <Route element={<LockedRoute />}>
-          <Route path="/" element={<Index />} />
-
           <Route element={<WebSocketProvider />}>
+            <Route path="/" element={<Index />} />
             <Route path="/play" element={<Play />} />
             <Route path="/game" element={<Game />} />
+            <Route path="/user" element={<User />} />
+            <Route path="/games/user" element={<GameHistory />} />
           </Route>
-
-          <Route path="/user" element={<User />} />
-          <Route path="/games/user" element={<GameHistory />} />
         </Route>
       </Routes>
     </>
