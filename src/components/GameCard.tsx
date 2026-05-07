@@ -9,6 +9,10 @@ type GameCardProps = {
   color: "white" | "black";
   whiteUsername: string;
   blackUsername: string;
+  whiteElo: number;
+  blackElo: number;
+  whiteEloChange: number | null;
+  blackEloChange: number | null;
   whiteDrawOffer: boolean;
   blackDrawOffer: boolean;
   selectedSquare: string | null;
@@ -19,12 +23,20 @@ type GameCardProps = {
   resign: () => void;
 };
 
+function formatEloChange(delta: number): string {
+  return delta >= 0 ? `+${delta}` : `${delta}`;
+}
+
 export default function GameCard({
   game,
   result,
   color,
   whiteUsername,
   blackUsername,
+  whiteElo,
+  blackElo,
+  whiteEloChange,
+  blackEloChange,
   whiteDrawOffer,
   blackDrawOffer,
   selectedSquare,
@@ -37,6 +49,10 @@ export default function GameCard({
   const isWhite = color === "white";
   const playerUsername = isWhite ? whiteUsername : blackUsername;
   const opponentUsername = isWhite ? blackUsername : whiteUsername;
+  const playerElo = isWhite ? whiteElo : blackElo;
+  const opponentElo = isWhite ? blackElo : whiteElo;
+  const playerEloChange = isWhite ? whiteEloChange : blackEloChange;
+  const opponentEloChange = isWhite ? blackEloChange : whiteEloChange;
   const opponentOffered = isWhite ? blackDrawOffer : whiteDrawOffer;
   const drawLabel = opponentOffered ? "Accept draw" : "Offer draw";
 
@@ -51,7 +67,9 @@ export default function GameCard({
 
   return (
     <div className="game">
-      <div className="game-player">{opponentUsername}</div>
+      <div className="game-player">
+        {opponentUsername} ({opponentEloChange !== null ? opponentElo + opponentEloChange : opponentElo}){opponentEloChange !== null && <span> ({formatEloChange(opponentEloChange)})</span>}
+      </div>
 
       <div className="game-board-wrapper">
         {result && <p className="game-result">{result}</p>}
@@ -65,7 +83,9 @@ export default function GameCard({
         />
       </div>
 
-      <div className="game-player">{playerUsername}</div>
+      <div className="game-player">
+        {playerUsername} ({playerEloChange !== null ? playerElo + playerEloChange : playerElo}){playerEloChange !== null && <span> ({formatEloChange(playerEloChange)})</span>}
+      </div>
 
       <div className="game-actions">
         <button className="btn btn-danger" onClick={resign} disabled={!!result}>Resign</button>

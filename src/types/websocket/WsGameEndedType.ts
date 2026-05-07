@@ -7,4 +7,6 @@ export type WsGameEndedType = {
   gameId: string;
   status: GameStatus;
   endedBy: EndedBy;
+  whiteElo: number;
+  blackElo: number;
 };

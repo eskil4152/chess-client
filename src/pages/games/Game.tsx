@@ -15,6 +15,7 @@ export default function Game() {
   const [gameState, setGameState] = useState<GameStateType | null>(null);
   const [game, setGame] = useState(new Chess());
   const [result, setResult] = useState<string | null>(null);
+  const [endElos, setEndElos] = useState<{ white: number; black: number } | null>(null);
   const [drawOffers, setDrawOffers] = useState({ white: false, black: false });
   const [selectedSquare, setSelectedSquare] = useState<string | null>(null);
   const [lastMove, setLastMove] = useState<{ from: string; to: string } | null>(null);
@@ -27,6 +28,7 @@ export default function Game() {
 
   const colorRef = useRef(color);
   colorRef.current = color;
+
 
   useEffect(() => {
     if (!connected) return;
@@ -73,7 +75,7 @@ export default function Game() {
       }
 
       if (msg.type === "GAME_ENDED") {
-        const { status, endedBy } = msg as WsGameEndedType;
+        const { status, endedBy, whiteElo, blackElo } = msg as WsGameEndedType;
         const label: Record<string, string> = {
           WHITE_WIN: "White wins",
           BLACK_WIN: "Black wins",
@@ -83,6 +85,7 @@ export default function Game() {
             ? `Draw by ${endedBy}`
             : `${label[status] ?? "Game over"} by ${endedBy}`,
         );
+        setEndElos({ white: whiteElo, black: blackElo });
       }
     });
   }, [subscribe]);
@@ -146,6 +149,10 @@ export default function Game() {
       color={color}
       whiteUsername={gameState.whiteUsername}
       blackUsername={gameState.blackUsername}
+      whiteElo={gameState.whiteElo}
+      blackElo={gameState.blackElo}
+      whiteEloChange={endElos ? endElos.white - gameState.whiteElo : null}
+      blackEloChange={endElos ? endElos.black - gameState.blackElo : null}
       onPieceDrop={onPieceDrop}
       onSquareClick={onSquareClick}
       selectedSquare={selectedSquare}

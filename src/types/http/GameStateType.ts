@@ -4,6 +4,8 @@ export type GameStateType = {
   whiteUsername: string;
   blackId: string;
   blackUsername: string;
+  whiteElo: number;
+  blackElo: number;
   moves: string[];
   whiteDrawOffer: boolean;
   blackDrawOffer: boolean;
