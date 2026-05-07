@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { useNavigate, Link, Navigate } from "react-router-dom";
 import { useAuth } from "../../providers/AuthProvider";
 import register from "../../features/api/register";
+import { AuthType } from "../../types/http/AuthType";
 import FormInput from "../../components/FormInput";
 import Button from "../../components/Button";
 import "../../styles/Auth.css";
 
 export default function Register() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -26,7 +27,9 @@ export default function Register() {
     const data = await register(username, password);
 
     if (data.status === 201) {
-      navigate("/login");
+      const auth: AuthType = await data.json();
+      setUser(auth);
+      navigate("/");
     } else if (data.status === 409) {
       setError("Username already taken.");
     } else {
