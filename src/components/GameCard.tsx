@@ -68,7 +68,7 @@ export default function GameCard({
   return (
     <div className="game">
       <div className="game-player">
-        {opponentUsername} ({opponentEloChange !== null ? opponentElo + opponentEloChange : opponentElo}){opponentEloChange !== null && <span> ({formatEloChange(opponentEloChange)})</span>}
+        {opponentUsername} - {opponentEloChange !== null ? opponentElo + opponentEloChange : opponentElo} {opponentEloChange !== null && <span> ({formatEloChange(opponentEloChange)})</span>}
       </div>
 
       <div className="game-board-wrapper">
@@ -84,7 +84,7 @@ export default function GameCard({
       </div>
 
       <div className="game-player">
-        {playerUsername} ({playerEloChange !== null ? playerElo + playerEloChange : playerElo}){playerEloChange !== null && <span> ({formatEloChange(playerEloChange)})</span>}
+        {playerUsername} - {playerEloChange !== null ? playerElo + playerEloChange : playerElo} {playerEloChange !== null && <span> ({formatEloChange(playerEloChange)})</span>}
       </div>
 
       <div className="game-actions">
