@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useWebSocket } from "../../providers/WebSocketProvider";
 import joinQueue from "../../features/api/joinQueue";
@@ -8,21 +8,28 @@ import getActiveGame from "../../features/api/getActiveGame";
 const DOTS = [".", "..", "..."];
 
 export default function Play() {
-  const { subscribe } = useWebSocket();
+  const { subscribe, connected } = useWebSocket();
   const navigate = useNavigate();
   const [dotIndex, setDotIndex] = useState(0);
+  const joinedRef = useRef(false);
 
   useEffect(() => {
     getActiveGame().then(({ status }) => {
       if (status === 200) { navigate("/game"); return; }
       joinQueue().then((res) => {
-        if (res.status === 409) navigate("/game");
+        if (res.status === 409) { navigate("/game"); return; }
+        joinedRef.current = true;
       });
     });
-    return () => {
-      void leaveQueue();
-    };
+    return () => { void leaveQueue(); };
   }, [navigate]);
+
+  useEffect(() => {
+    if (!connected || !joinedRef.current) return;
+    getActiveGame().then(({ status }) => {
+      if (status === 200) navigate("/game");
+    });
+  }, [connected, navigate]);
 
   useEffect(() => {
     return subscribe((msg) => {
