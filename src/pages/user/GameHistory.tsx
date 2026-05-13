@@ -18,7 +18,7 @@ export default function GameHistory() {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error occurred</div>;
 
-  const gameHistory = response?.data as GamePreviewType[];
+  const gameHistory = (response?.data ?? []) as GamePreviewType[];
 
   return (
     <div className="profile">
