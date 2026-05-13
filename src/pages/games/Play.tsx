@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useWebSocket } from "../../providers/WebSocketProvider";
 import joinQueue from "../../features/api/joinQueue";
 import leaveQueue from "../../features/api/leaveQueue";
@@ -10,13 +10,15 @@ const DOTS = [".", "..", "..."];
 export default function Play() {
   const { subscribe, connected } = useWebSocket();
   const navigate = useNavigate();
+  const { state } = useLocation();
+  const timeControl: string = state?.timeControl ?? "BLITZ_5_0";
   const [dotIndex, setDotIndex] = useState(0);
   const joinedRef = useRef(false);
 
   useEffect(() => {
     getActiveGame().then(({ status }) => {
       if (status === 200) { navigate("/game"); return; }
-      joinQueue().then((res) => {
+      joinQueue(timeControl).then((res) => {
         if (res.status === 409) { navigate("/game"); return; }
         joinedRef.current = true;
       });
@@ -45,7 +47,7 @@ export default function Play() {
   return (
     <div className="page">
       <p>Searching for opponent{DOTS[dotIndex]}</p>
-      <button className="btn" onClick={() => navigate("/")}>Cancel</button>
+      <button className="btn" onClick={() => navigate("/play/select")}>Cancel</button>
     </div>
   );
 }

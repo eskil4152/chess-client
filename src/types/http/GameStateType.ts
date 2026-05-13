@@ -9,4 +9,6 @@ export type GameStateType = {
   moves: string[];
   whiteDrawOffer: boolean;
   blackDrawOffer: boolean;
+  whiteRemainingMs?: number | null;
+  blackRemainingMs?: number | null;
 };

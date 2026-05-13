@@ -41,6 +41,9 @@ export default function WebSocketProvider() {
 
   const wsUrl = process.env.REACT_APP_WS_API_URL;
 
+  const navigateRef = useRef(navigate);
+  useEffect(() => { navigateRef.current = navigate; }, [navigate]);
+
   const subscribe = useCallback((listener: (event: WsMessage) => void) => {
     listenersRef.current.add(listener);
     return () => listenersRef.current.delete(listener);
@@ -76,7 +79,7 @@ export default function WebSocketProvider() {
       ws.onmessage = (event) => {
         try {
           const data: WsMessage = JSON.parse(event.data);
-          if (data.type === "ERROR" && data.code === 401) navigate("/login");
+          if (data.type === "ERROR" && data.code === 401) navigateRef.current("/login");
           listenersRef.current.forEach((l) => l(data));
         } catch {}
       };
@@ -103,7 +106,7 @@ export default function WebSocketProvider() {
       active = false;
       wsRef.current?.close();
     };
-  }, [wsUrl, navigate]);
+  }, [wsUrl]);
 
   return (
     <WebSocketContext.Provider value={{ connected, sendJson, subscribe }}>

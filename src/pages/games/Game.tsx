@@ -19,6 +19,8 @@ export default function Game() {
   const [drawOffers, setDrawOffers] = useState({ white: false, black: false });
   const [selectedSquare, setSelectedSquare] = useState<string | null>(null);
   const [lastMove, setLastMove] = useState<{ from: string; to: string } | null>(null);
+  const [whiteMs, setWhiteMs] = useState<number | null>(null);
+  const [blackMs, setBlackMs] = useState<number | null>(null);
 
   const color: "white" | "black" | null = gameState
     ? gameState.whiteId === user!.userId
@@ -28,6 +30,9 @@ export default function Game() {
 
   const colorRef = useRef(color);
   colorRef.current = color;
+
+  const turnRef = useRef(game.turn());
+  useEffect(() => { turnRef.current = game.turn(); }, [game]);
 
 
   useEffect(() => {
@@ -48,6 +53,8 @@ export default function Game() {
         white: state.whiteDrawOffer,
         black: state.blackDrawOffer,
       });
+      setWhiteMs(state.whiteRemainingMs ?? null);
+      setBlackMs(state.blackRemainingMs ?? null);
     });
   }, [connected]);
 
@@ -89,6 +96,19 @@ export default function Game() {
       }
     });
   }, [subscribe]);
+
+  const hasClock = whiteMs !== null && blackMs !== null;
+  useEffect(() => {
+    if (!hasClock || !!result) return;
+    const id = setInterval(() => {
+      if (turnRef.current === "w") {
+        setWhiteMs((prev) => prev !== null ? Math.max(0, prev - 1000) : null);
+      } else {
+        setBlackMs((prev) => prev !== null ? Math.max(0, prev - 1000) : null);
+      }
+    }, 1000);
+    return () => clearInterval(id);
+  }, [hasClock, result]);
 
   function onSquareClick(square: string) {
     if (!gameState || !color || !connected || result) return;
@@ -153,6 +173,8 @@ export default function Game() {
       blackElo={gameState.blackElo}
       whiteEloChange={endElos ? endElos.white - gameState.whiteElo : null}
       blackEloChange={endElos ? endElos.black - gameState.blackElo : null}
+      whiteMs={whiteMs}
+      blackMs={blackMs}
       onPieceDrop={onPieceDrop}
       onSquareClick={onSquareClick}
       selectedSquare={selectedSquare}
