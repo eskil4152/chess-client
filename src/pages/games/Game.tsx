@@ -82,7 +82,7 @@ export default function Game() {
         };
         setResult(
           status === "DRAW"
-            ? `Draw by ${endedBy}`
+            ? `Draw by ${endedBy.replaceAll('_', ' ')}`
             : `${label[status] ?? "Game over"} by ${endedBy}`,
         );
         setEndElos({ white: whiteElo, black: blackElo });
