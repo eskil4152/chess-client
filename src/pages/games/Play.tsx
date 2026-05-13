@@ -24,7 +24,7 @@ export default function Play() {
       });
     });
     return () => { void leaveQueue(); };
-  }, [navigate]);
+  }, [navigate, timeControl]);
 
   useEffect(() => {
     if (!connected || !joinedRef.current) return;
