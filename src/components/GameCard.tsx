@@ -13,6 +13,8 @@ type GameCardProps = {
   blackElo: number;
   whiteEloChange: number | null;
   blackEloChange: number | null;
+  whiteMs: number | null;
+  blackMs: number | null;
   whiteDrawOffer: boolean;
   blackDrawOffer: boolean;
   selectedSquare: string | null;
@@ -22,6 +24,13 @@ type GameCardProps = {
   onDraw: () => void;
   resign: () => void;
 };
+
+function formatMs(ms: number): string {
+  const totalSeconds = Math.max(0, Math.ceil(ms / 1000));
+  const m = Math.floor(totalSeconds / 60);
+  const s = totalSeconds % 60;
+  return `${m}:${s.toString().padStart(2, "0")}`;
+}
 
 function formatEloChange(delta: number): string {
   return delta >= 0 ? `+${delta}` : `${delta}`;
@@ -37,6 +46,8 @@ export default function GameCard({
   blackElo,
   whiteEloChange,
   blackEloChange,
+  whiteMs,
+  blackMs,
   whiteDrawOffer,
   blackDrawOffer,
   selectedSquare,
@@ -53,6 +64,8 @@ export default function GameCard({
   const opponentElo = isWhite ? blackElo : whiteElo;
   const playerEloChange = isWhite ? whiteEloChange : blackEloChange;
   const opponentEloChange = isWhite ? blackEloChange : whiteEloChange;
+  const playerMs = isWhite ? whiteMs : blackMs;
+  const opponentMs = isWhite ? blackMs : whiteMs;
   const opponentOffered = isWhite ? blackDrawOffer : whiteDrawOffer;
   const drawLabel = opponentOffered ? "Accept draw" : "Offer draw";
 
@@ -68,7 +81,8 @@ export default function GameCard({
   return (
     <div className="game">
       <div className="game-player">
-        {opponentUsername} - {opponentEloChange !== null ? opponentElo + opponentEloChange : opponentElo} {opponentEloChange !== null && <span> ({formatEloChange(opponentEloChange)})</span>}
+        <span>{opponentUsername} - {opponentEloChange !== null ? opponentElo + opponentEloChange : opponentElo} {opponentEloChange !== null && <span>({formatEloChange(opponentEloChange)})</span>}</span>
+        {opponentMs !== null && <span className="game-clock">{formatMs(opponentMs)}</span>}
       </div>
 
       <div className="game-board-wrapper">
@@ -84,7 +98,8 @@ export default function GameCard({
       </div>
 
       <div className="game-player">
-        {playerUsername} - {playerEloChange !== null ? playerElo + playerEloChange : playerElo} {playerEloChange !== null && <span> ({formatEloChange(playerEloChange)})</span>}
+        <span>{playerUsername} - {playerEloChange !== null ? playerElo + playerEloChange : playerElo} {playerEloChange !== null && <span>({formatEloChange(playerEloChange)})</span>}</span>
+        {playerMs !== null && <span className="game-clock">{formatMs(playerMs)}</span>}
       </div>
 
       <div className="game-actions">
