@@ -7,7 +7,7 @@ export default function Index() {
   return (
     <div className="page">
       <h1>Welcome, {user?.username}!</h1>
-      <Link to="/play" className="btn">Find game</Link>
+      <Link to="/play/select" className="btn">Play</Link>
     </div>
   );
 }

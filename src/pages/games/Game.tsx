@@ -106,12 +106,12 @@ export default function Game() {
 
   function onPieceDrop(from: string, to: string): boolean {
     if (!gameState || !color || !connected) return false;
+
     const turn = game.turn();
     if (
       (color === "white" && turn !== "w") ||
       (color === "black" && turn !== "b")
-    )
-      return false;
+    ) return false;
     const next = new Chess(game.fen());
     try {
       const move = next.move({ from, to, promotion: "q" });

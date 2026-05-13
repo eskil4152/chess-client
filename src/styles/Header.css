@@ -24,6 +24,25 @@
   gap: 8px;
 }
 
+.status-bar {
+  width: 100%;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 4px 0;
+}
+
+.status-bar.connected {
+  background: #2d6a4f;
+  color: #b7e4c7;
+}
+
+.status-bar.disconnected {
+  background: #6b1a1a;
+  color: #f4a0a0;
+}
+
 .header a {
   font-weight: 500;
   padding: 6px 10px;

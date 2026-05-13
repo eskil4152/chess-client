@@ -7,6 +7,15 @@ import React, {
   useState,
 } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+import "../styles/Header.css";
+
+function StatusBar({ connected }: { connected: boolean }) {
+  return (
+    <div className={`status-bar ${connected ? "connected" : "disconnected"}`}>
+      {connected ? "Connected" : "Disconnected"}
+    </div>
+  );
+}
 
 type WsMessage = {
   type: string;
@@ -38,8 +47,9 @@ export default function WebSocketProvider() {
   }, []);
 
   const sendJson = useCallback((payload: unknown): boolean => {
-    if (wsRef.current?.readyState === WebSocket.OPEN) {
-      wsRef.current.send(JSON.stringify(payload));
+    const state = wsRef.current?.readyState;
+    if (state === WebSocket.OPEN) {
+      wsRef.current!.send(JSON.stringify(payload));
       return true;
     }
     return false;
@@ -97,6 +107,7 @@ export default function WebSocketProvider() {
 
   return (
     <WebSocketContext.Provider value={{ connected, sendJson, subscribe }}>
+      <StatusBar connected={connected} />
       <Outlet />
     </WebSocketContext.Provider>
   );
