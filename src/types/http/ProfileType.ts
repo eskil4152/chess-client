@@ -3,4 +3,5 @@ export type UserDataType = {
   bio?: string;
   avatarUrl: string | null;
   elo: number;
+  isFriend: boolean;
 };

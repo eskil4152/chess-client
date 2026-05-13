@@ -14,7 +14,7 @@ export default function Header() {
       </div>
 
       <div className={"headerCenter"}>
-        <Link to="/play/select">Play</Link>
+        <Link to="/friends">Friends</Link>
       </div>
 
       <div className="headerRight">
