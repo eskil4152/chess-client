@@ -1,13 +1,16 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import useLoading from "../../utils/useLoading";
 import getUser from "../../features/api/getUser";
 import addFriend from "../../features/api/addFriend";
 import removeFriend from "../../features/api/removeFriend";
+import editProfile from "../../features/api/editProfile";
+import editPassword from "../../features/api/editPassword";
 import { UserDataType } from "../../types/http/ProfileType";
 import logout from "../../features/api/logout";
 import { useAuth } from "../../providers/AuthProvider";
 import "../../styles/User.css";
+import "../../styles/Auth.css";
 
 export default function User() {
   const navigate = useNavigate();
@@ -16,9 +19,22 @@ export default function User() {
   const [searchParams] = useSearchParams();
   const username = searchParams.get("username");
 
+  const [editOpen, setEditOpen] = useState(false);
+  const [bioInput, setBioInput] = useState("");
+  const [avatarInput, setAvatarInput] = useState("");
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [bioError, setBioError] = useState<string | null>(null);
+  const [avatarError, setAvatarError] = useState<string | null>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [bioSuccess, setBioSuccess] = useState<string | null>(null);
+  const [avatarSuccess, setAvatarSuccess] = useState<string | null>(null);
+  const [passwordSuccess, setPasswordSuccess] = useState<string | null>(null);
+
   const { loading, error, response } = useLoading(
     useCallback(() => getUser(username!), [username]),
   );
+  const [localUser, setLocalUser] = useState<UserDataType | null>(null);
 
   async function handleLogout() {
     await logout();
@@ -31,7 +47,7 @@ export default function User() {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error occurred</div>;
 
-  const responseUser = response?.data as UserDataType;
+  const responseUser = localUser ?? (response?.data as UserDataType);
 
   const isUser = username === user?.username;
   const isFriend = responseUser.isFriend;
@@ -44,25 +60,126 @@ export default function User() {
     }
   }
 
+  function openEdit() {
+    setBioInput(responseUser.bio ?? "");
+    setAvatarInput(responseUser.avatarUrl ?? "");
+    setEditOpen(true);
+  }
+
+  async function handleSaveBio() {
+    setBioError(null);
+    setBioSuccess(null);
+    try {
+      const res = await editProfile("bio", bioInput);
+      if (res.status >= 400) { setBioError("Failed to update bio."); return; }
+      setLocalUser({ ...responseUser, bio: bioInput || undefined });
+      setBioSuccess("Bio updated.");
+    } catch {
+      setBioError("Something went wrong.");
+    }
+  }
+
+  async function handleSaveAvatar() {
+    setAvatarError(null);
+    setAvatarSuccess(null);
+    try {
+      const res = await editProfile("avatarUrl", avatarInput);
+      if (res.status >= 400) { setAvatarError("Failed to update avatar."); return; }
+      setLocalUser({ ...responseUser, avatarUrl: avatarInput || null });
+      setAvatarSuccess("Avatar updated.");
+    } catch {
+      setAvatarError("Something went wrong.");
+    }
+  }
+
+  async function handleSavePassword() {
+    setPasswordError(null);
+    setPasswordSuccess(null);
+    if (!oldPassword || !newPassword) { setPasswordError("Both password fields are required."); return; }
+    try {
+      const res = await editPassword(oldPassword, newPassword);
+      if (res.status >= 400) { setPasswordError("Failed to update password. Check your current password."); return; }
+      setOldPassword("");
+      setNewPassword("");
+      setPasswordSuccess("Password updated.");
+    } catch {
+      setPasswordError("Something went wrong.");
+    }
+  }
+
   return (
     <div className="profile">
       <div className="profile-card">
+        {responseUser.avatarUrl && (
+          <img className="profile-avatar" src={responseUser.avatarUrl} alt="avatar" />
+        )}
         <p className="profile-username">{responseUser.username}</p>
         <p className="profile-elo">ELO: {responseUser.elo}</p>
         {responseUser.bio && <p className="profile-bio">{responseUser.bio}</p>}
         <div className="profile-actions">
           <Link to={`/games/user?username=${responseUser.username}`} className="btn btn-pill">Game history</Link>
+          {isUser && (
+            <button className="btn btn-pill" onClick={openEdit}>Edit</button>
+          )}
         </div>
       </div>
 
-      {isUser ? (
-        <button className="btn btn-danger" onClick={handleLogout}>Log out</button>
-      ) : (
+      {isUser && editOpen && (
+        <div className="profile-edit-card">
+          <p className="profile-edit-section-title">Bio</p>
+          <input
+            className="form-input"
+            type="text"
+            placeholder="Bio"
+            value={bioInput}
+            onChange={(e) => setBioInput(e.target.value)}
+          />
+          <button className="btn" onClick={handleSaveBio}>Save bio</button>
+          {bioError && <p className="profile-edit-error">{bioError}</p>}
+          {bioSuccess && <p className="profile-edit-success">{bioSuccess}</p>}
+
+          <p className="profile-edit-section-title">Avatar URL</p>
+          <input
+            className="form-input"
+            type="text"
+            placeholder="Avatar URL"
+            value={avatarInput}
+            onChange={(e) => setAvatarInput(e.target.value)}
+          />
+          <button className="btn" onClick={handleSaveAvatar}>Save avatar</button>
+          {avatarError && <p className="profile-edit-error">{avatarError}</p>}
+          {avatarSuccess && <p className="profile-edit-success">{avatarSuccess}</p>}
+
+          <p className="profile-edit-section-title">Change password</p>
+          <input
+            className="form-input"
+            type="password"
+            placeholder="Current password"
+            value={oldPassword}
+            onChange={(e) => setOldPassword(e.target.value)}
+          />
+          <input
+            className="form-input"
+            type="password"
+            placeholder="New password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+          />
+          <button className="btn" onClick={handleSavePassword}>Save password</button>
+          {passwordError && <p className="profile-edit-error">{passwordError}</p>}
+          {passwordSuccess && <p className="profile-edit-success">{passwordSuccess}</p>}
+        </div>
+      )}
+
+      {!isUser && (
         <button className="btn btn-pill" onClick={handleFriend}>
           {isFriend ? "Remove friend" : "Add friend"}
         </button>
       )}
 
+      {isUser && (
+        <button className="btn btn-danger" onClick={handleLogout}>Log out</button>
+      )}
     </div>
   );
 }

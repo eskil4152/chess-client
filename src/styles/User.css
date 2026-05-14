@@ -42,6 +42,48 @@
   margin-top: 8px;
 }
 
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-edit-card {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 24px 32px;
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.profile-edit-section-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 8px 0 0;
+}
+
+.profile-edit-section-title:first-child {
+  margin-top: 0;
+}
+
+.profile-edit-error {
+  font-size: 0.9rem;
+  color: #ff6b6b;
+  margin: 0;
+}
+
+.profile-edit-success {
+  font-size: 0.9rem;
+  color: #6bff9e;
+  margin: 0;
+}
+
 .game-list {
   width: 100%;
   max-width: 480px;

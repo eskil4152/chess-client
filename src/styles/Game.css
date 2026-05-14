@@ -20,6 +20,15 @@
   width: min(80vw, 80vh, 560px);
 }
 
+.game-player-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.game-player-link:hover {
+  text-decoration: underline;
+}
+
 .game-clock {
   font-variant-numeric: tabular-nums;
   font-size: 1.1rem;

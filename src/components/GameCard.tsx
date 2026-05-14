@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Chessboard } from "react-chessboard";
 import { Chess } from "chess.js";
 import "../styles/Game.css";
@@ -81,7 +82,7 @@ export default function GameCard({
   return (
     <div className="game">
       <div className="game-player">
-        <span>{opponentUsername} - {opponentEloChange !== null ? opponentElo + opponentEloChange : opponentElo} {opponentEloChange !== null && <span>({formatEloChange(opponentEloChange)})</span>}</span>
+        <span><Link className="game-player-link" to={`/user?username=${opponentUsername}`}>{opponentUsername}</Link> - {opponentEloChange !== null ? opponentElo + opponentEloChange : opponentElo} {opponentEloChange !== null && <span>({formatEloChange(opponentEloChange)})</span>}</span>
         {opponentMs !== null && <span className="game-clock">{formatMs(opponentMs)}</span>}
       </div>
 
@@ -98,7 +99,7 @@ export default function GameCard({
       </div>
 
       <div className="game-player">
-        <span>{playerUsername} - {playerEloChange !== null ? playerElo + playerEloChange : playerElo} {playerEloChange !== null && <span>({formatEloChange(playerEloChange)})</span>}</span>
+        <span><Link className="game-player-link" to={`/user?username=${playerUsername}`}>{playerUsername}</Link> - {playerEloChange !== null ? playerElo + playerEloChange : playerElo} {playerEloChange !== null && <span>({formatEloChange(playerEloChange)})</span>}</span>
         {playerMs !== null && <span className="game-clock">{formatMs(playerMs)}</span>}
       </div>
 
