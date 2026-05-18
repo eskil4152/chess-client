@@ -48,6 +48,7 @@ export default function Friends() {
           ? friends.map((friend: FriendType) => (
               <FriendCard
                 key={friend.userId}
+                userId={friend.userId}
                 username={friend.username}
                 bio={friend.bio}
                 avatar={friend.avatarUrl}
