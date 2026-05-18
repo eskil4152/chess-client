@@ -14,12 +14,14 @@ import Header from "./components/Header";
 import LockedRoute from "./components/LockedRoute";
 import WebSocketProvider from "./providers/WebSocketProvider";
 import Friends from "./pages/friends/Friends";
+import ServerOffline from "./pages/ServerOffline";
 
 function App() {
   return (
     <>
       <Header />
       <Routes>
+        <Route path="/server-offline" element={<ServerOffline />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 

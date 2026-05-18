@@ -5,12 +5,14 @@ import React, {
   useMemo,
   useState,
 } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthType } from "../types/http/AuthType";
 
 type AuthContextType = {
   user: AuthType | null;
   setUser: (user: AuthType | null) => void;
   loading: boolean;
+  serverOffline: boolean;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -20,8 +22,10 @@ export default function AuthProvider({
 }: {
   children: React.ReactNode;
 }) {
+  const navigate = useNavigate();
   const [user, setUser] = useState<AuthType | null>(null);
   const [loading, setLoading] = useState(true);
+  const [serverOffline, setServerOffline] = useState(false);
 
   useEffect(() => {
     const stored = sessionStorage.getItem("auth");
@@ -57,11 +61,14 @@ export default function AuthProvider({
           sessionStorage.removeItem("auth");
         }
       })
-      .catch(() => {})
+      .catch(() => {
+        setServerOffline(true);
+        navigate("/server-offline", { replace: true });
+      })
       .finally(() => setLoading(false));
   }, []);
 
-  const value = useMemo(() => ({ user, setUser, loading }), [user, loading]);
+  const value = useMemo(() => ({ user, setUser, loading, serverOffline }), [user, loading, serverOffline]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

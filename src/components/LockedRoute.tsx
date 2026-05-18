@@ -16,9 +16,10 @@ type Props = {
 };
 
 export default function LockedRoute({ minRole }: Props) {
-  const { user, loading } = useAuth();
+  const { user, loading, serverOffline } = useAuth();
 
   if (loading) return null;
+  if (serverOffline) return <Navigate to="/server-offline" replace />;
   if (!user) return <Navigate to="/login" replace />;
 
   if (minRole && ROLE_RANK[user.userRole as UserRole] < ROLE_RANK[minRole])
