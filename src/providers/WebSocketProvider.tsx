@@ -7,6 +7,7 @@ import React, {
   useState,
 } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+import { ChallengeProvider } from "./ChallengeProvider";
 import "../styles/Header.css";
 
 function StatusBar({ connected }: { connected: boolean }) {
@@ -80,6 +81,7 @@ export default function WebSocketProvider() {
         try {
           const data: WsMessage = JSON.parse(event.data);
           if (data.type === "ERROR" && data.code === 401) navigateRef.current("/login");
+          if (data.type === "GAME_STARTED") navigateRef.current("/game");
           listenersRef.current.forEach((l) => l(data));
         } catch {}
       };
@@ -111,7 +113,9 @@ export default function WebSocketProvider() {
   return (
     <WebSocketContext.Provider value={{ connected, sendJson, subscribe }}>
       <StatusBar connected={connected} />
-      <Outlet />
+      <ChallengeProvider>
+        <Outlet />
+      </ChallengeProvider>
     </WebSocketContext.Provider>
   );
 }
