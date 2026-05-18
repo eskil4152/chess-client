@@ -66,7 +66,7 @@ export default function AuthProvider({
         navigate("/server-offline", { replace: true });
       })
       .finally(() => setLoading(false));
-  }, []);
+  }, [navigate]);
 
   const value = useMemo(() => ({ user, setUser, loading, serverOffline }), [user, loading, serverOffline]);
 
