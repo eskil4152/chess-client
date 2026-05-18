@@ -14,7 +14,30 @@
 .headerCenter {
   justify-self: center;
   display: flex;
-  gap: 25px;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-game-btn {
+  background: none;
+  border: none;
+  color: var(--text-main);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.header-game-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.header-no-game {
+  font-size: 0.8rem;
+  opacity: 0.7;
 }
 
 .headerRight {
