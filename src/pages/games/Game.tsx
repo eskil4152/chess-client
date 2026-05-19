@@ -7,6 +7,7 @@ import { WsGameEndedType } from "../../types/websocket/WsGameEndedType";
 import { GameStateType } from "../../types/http/GameStateType";
 import GameCard from "../../components/GameCard";
 import getActiveGame from "../../features/api/getActiveGame";
+import { playMoveSound, playCaptureSound, playCheckSound, playCheckmateSound, playVictorySound, playDefeatSound, playDrawSound } from "../../utils/sounds";
 
 export default function Game() {
   const { subscribe, sendJson, connected } = useWebSocket();
@@ -33,6 +34,9 @@ export default function Game() {
 
   const turnRef = useRef(game.turn());
   useEffect(() => { turnRef.current = game.turn(); }, [game]);
+
+  const gameRef = useRef(game);
+  useEffect(() => { gameRef.current = game; }, [game]);
 
 
   useEffect(() => {
@@ -62,16 +66,18 @@ export default function Game() {
     return subscribe((msg) => {
       if (msg.type === "MOVE") {
         const { move } = msg as WsMoveType;
+        const next = new Chess(gameRef.current.fen());
+        try {
+          const m = next.move(move);
+          if (next.isCheckmate()) playCheckmateSound();
+          else if (next.inCheck()) playCheckSound();
+          else if (m.captured) playCaptureSound();
+          else playMoveSound();
+        } catch {}
         setDrawOffers({ white: false, black: false });
         setSelectedSquare(null);
         setLastMove({ from: move.slice(0, 2), to: move.slice(2, 4) });
-        setGame((prev) => {
-          const next = new Chess(prev.fen());
-          try {
-            next.move(move);
-          } catch {}
-          return next;
-        });
+        setGame(next);
       }
 
       if (msg.type === "OFFER_DRAW") {
@@ -93,6 +99,10 @@ export default function Game() {
             : `${label[status] ?? "Game over"} by ${endedBy}`,
         );
         setEndElos({ white: whiteElo, black: blackElo });
+        const c = colorRef.current;
+        if (status === "DRAW") playDrawSound();
+        else if ((status === "WHITE_WIN" && c === "white") || (status === "BLACK_WIN" && c === "black")) playVictorySound();
+        else playDefeatSound();
       }
     });
   }, [subscribe]);
@@ -143,6 +153,10 @@ export default function Game() {
       if (!sent) return false;
       setGame(next);
       setLastMove({ from: move.from, to: move.to });
+      if (next.isCheckmate()) playCheckmateSound();
+      else if (next.inCheck()) playCheckSound();
+      else if (move.captured) playCaptureSound();
+      else playMoveSound();
       return true;
     } catch {
       return false;

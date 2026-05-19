@@ -9,6 +9,7 @@ import {
   WsSendCancelChallenge,
 } from "../types/websocket/WsChallengeType";
 import ChallengeOverlay from "../components/ChallengeOverlay";
+import { playNewChallengeSound } from "../utils/sounds";
 
 export type IncomingChallenge = {
   challengeId: string;
@@ -47,6 +48,7 @@ export function ChallengeProvider({ children }: { children: React.ReactNode }) {
             prev ? { ...prev, challengeId: data.challengeId } : null
           );
         } else {
+          playNewChallengeSound();
           setIncoming({ challengeId: data.challengeId, challenger: data.challenger, timeControl: data.timeControl });
         }
       }
