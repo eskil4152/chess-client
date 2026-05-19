@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Chessboard } from "react-chessboard";
 import { Chess } from "chess.js";
@@ -70,6 +70,8 @@ export default function GameCard({
   const opponentOffered = isWhite ? blackDrawOffer : whiteDrawOffer;
   const drawLabel = opponentOffered ? "Accept draw" : "Offer draw";
 
+  const [dragOrigin, setDragOrigin] = useState<string | null>(null);
+
   const squareStyles: Record<string, React.CSSProperties> = {};
   if (lastMove) {
     squareStyles[lastMove.from] = { backgroundColor: "rgba(100, 200, 100, 0.45)" };
@@ -77,6 +79,19 @@ export default function GameCard({
   }
   if (selectedSquare) {
     squareStyles[selectedSquare] = { backgroundColor: "rgba(255, 255, 100, 0.55)" };
+  }
+  if (dragOrigin) {
+    squareStyles[dragOrigin] = { backgroundColor: "rgba(255, 255, 100, 0.55)" };
+  }
+  if (game.inCheck()) {
+    const files = ["a", "b", "c", "d", "e", "f", "g", "h"];
+    const turnColor = game.turn();
+    game.board().forEach((row, ri) =>
+      row.forEach((sq, fi) => {
+        if (sq?.type === "k" && sq.color === turnColor)
+          squareStyles[files[fi] + (8 - ri)] = { backgroundColor: "rgba(220, 50, 50, 0.65)" };
+      })
+    );
   }
 
   return (
@@ -93,6 +108,8 @@ export default function GameCard({
           boardOrientation={color}
           onPieceDrop={onPieceDrop}
           onSquareClick={onSquareClick}
+          onPieceDragBegin={(_piece, square) => setDragOrigin(square)}
+          onPieceDragEnd={() => setDragOrigin(null)}
           customSquareStyles={squareStyles}
           arePiecesDraggable={!result}
         />
