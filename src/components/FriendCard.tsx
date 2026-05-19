@@ -33,10 +33,7 @@ export default function FriendCard({ userId, username, bio, avatar }: FriendCard
 
   return (
     <div className="friend-card" onClick={() => navigate(`/user?username=${username}`)}>
-      {avatar
-        ? <img src={avatar} alt={username} className="friend-card-avatar" />
-        : <div className="friend-card-avatar-placeholder" />
-      }
+      <img src={avatar || "/default_profile.png"} alt={username} className="friend-card-avatar" />
       <div className="friend-card-info">
         <span className="friend-card-username">{username}</span>
         {bio && <span className="friend-card-bio">{bio}</span>}

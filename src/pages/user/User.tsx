@@ -110,9 +110,7 @@ export default function User() {
   return (
     <div className="profile">
       <div className="profile-card">
-        {responseUser.avatarUrl && (
-          <img className="profile-avatar" src={responseUser.avatarUrl} alt="avatar" />
-        )}
+        <img className="profile-avatar" src={responseUser.avatarUrl || "/default_profile.png"} alt="avatar" />
         <p className="profile-username">{responseUser.username}</p>
         <p className="profile-elo">ELO: {responseUser.elo}</p>
         {responseUser.bio && <p className="profile-bio">{responseUser.bio}</p>}
