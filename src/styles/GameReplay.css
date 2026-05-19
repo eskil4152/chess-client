@@ -1,0 +1,19 @@
+.game-replay-board-row {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+}
+
+.game-replay-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.game-replay-counter {
+  min-width: 60px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.95rem;
+  opacity: 0.8;
+}

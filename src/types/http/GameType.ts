@@ -1,14 +1,9 @@
+import { GameStatus } from "./GameStatus";
+
 export type GameType = {
   gameId: string;
   whiteUsername: string;
   blackUsername: string;
   status: GameStatus;
-  moves: Array<String>;
+  moves: string;
 };
-
-enum GameStatus {
-  ONGOING,
-  WHITE_WIN,
-  BLACK_WIN,
-  DRAW,
-}

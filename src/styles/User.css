@@ -101,6 +101,15 @@
   letter-spacing: 0.05em;
 }
 
+.game-card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.game-card-link:hover .game-card {
+  background: var(--bg-hover, color-mix(in srgb, var(--bg-secondary) 85%, white));
+}
+
 .game-card {
   background: var(--bg-secondary);
   border-radius: 8px;
