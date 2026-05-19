@@ -1,3 +1,9 @@
+.game-replay-board-row {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+}
+
 .game-replay-controls {
   display: flex;
   align-items: center;

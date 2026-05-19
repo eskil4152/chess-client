@@ -1,0 +1,42 @@
+.eval-bar {
+  display: flex;
+  flex-direction: column;
+  width: 18px;
+  height: min(80vw, 80vh, 560px);
+  border-radius: 4px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.eval-bar-black {
+  background: #1a1a1a;
+  position: relative;
+  transition: height 0.4s ease;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.eval-bar-white {
+  background: #f0f0f0;
+  position: relative;
+  transition: height 0.4s ease;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.eval-bar-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 2px 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.eval-bar-label-black {
+  color: #f0f0f0;
+}
+
+.eval-bar-label-white {
+  color: #1a1a1a;
+}

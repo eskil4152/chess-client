@@ -69,6 +69,14 @@ a:hover {
   background: #8B1A1A;
 }
 
+.btn-active {
+  background: #3a6ea8;
+}
+
+.btn-active:hover {
+  background: #3a6ea8;
+}
+
 .btn-pill {
   background: var(--color-pill);
   border-radius: 999px;
