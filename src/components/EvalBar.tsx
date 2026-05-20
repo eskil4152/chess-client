@@ -13,9 +13,9 @@ function formatLabel(score: EvalScore): string {
   return (abs / 100).toFixed(1);
 }
 
-type Props = { score: EvalScore };
+type Props = { score: EvalScore; flipped?: boolean };
 
-export default function EvalBar({ score }: Props) {
+export default function EvalBar({ score, flipped = false }: Props) {
   let whitePercent = 50;
   if (score) {
     if (score.type === "mate") {
@@ -26,15 +26,21 @@ export default function EvalBar({ score }: Props) {
   }
 
   const label = formatLabel(score);
-  const whiteOnTop = whitePercent < 50;
+  const blackPercent = 100 - whitePercent;
+
+  const topPercent = flipped ? whitePercent : blackPercent;
+  const bottomPercent = flipped ? blackPercent : whitePercent;
+  const topClass = flipped ? "eval-bar-white" : "eval-bar-black";
+  const bottomClass = flipped ? "eval-bar-black" : "eval-bar-white";
+  const labelOnTop = flipped ? whitePercent > 50 : whitePercent < 50;
 
   return (
     <div className="eval-bar">
-      <div className="eval-bar-black" style={{ height: `${100 - whitePercent}%` }}>
-        {whiteOnTop && <span className="eval-bar-label eval-bar-label-black">{label}</span>}
+      <div className={topClass} style={{ height: `${topPercent}%` }}>
+        {labelOnTop && <span className={`eval-bar-label eval-bar-label-${flipped ? "white" : "black"}`}>{label}</span>}
       </div>
-      <div className="eval-bar-white" style={{ height: `${whitePercent}%` }}>
-        {!whiteOnTop && <span className="eval-bar-label eval-bar-label-white">{label}</span>}
+      <div className={bottomClass} style={{ height: `${bottomPercent}%` }}>
+        {!labelOnTop && <span className={`eval-bar-label eval-bar-label-${flipped ? "black" : "white"}`}>{label}</span>}
       </div>
     </div>
   );
