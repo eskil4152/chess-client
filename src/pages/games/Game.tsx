@@ -174,7 +174,8 @@ export default function Game() {
     sendJson({ type: "RESIGN", gameId: gameState.gameId });
   }
 
-  if (!gameState || !color) return <p>Loading game…</p>;
+  if (!connected) return <div className="page"><p className="game-status-msg">Connecting…</p></div>;
+  if (!gameState || !color) return <div className="page"><p className="game-status-msg">You are not currently in a game</p></div>;
 
   return (
     <GameCard

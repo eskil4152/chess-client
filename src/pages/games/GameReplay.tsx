@@ -20,6 +20,7 @@ const resultLabel: Record<string, string> = {
 function GameReplayBoard({ gameData }: { gameData: GameType }) {
   const [step, setStep] = useState(0);
   const [analyzeEnabled, setAnalyzeEnabled] = useState(false);
+  const [flipped, setFlipped] = useState(false);
 
   const master = new Chess();
   try {
@@ -77,20 +78,20 @@ function GameReplayBoard({ gameData }: { gameData: GameType }) {
   return (
     <div className="game">
       <div className="game-player">
-        <Link className="game-player-link" to={`/user?username=${gameData.blackUsername}`}>
-          {gameData.blackUsername}
+        <Link className="game-player-link" to={`/user?username=${flipped ? gameData.whiteUsername : gameData.blackUsername}`}>
+          {flipped ? gameData.whiteUsername : gameData.blackUsername}
         </Link>
       </div>
 
       <div className="game-replay-board-row">
-        {analyzeEnabled && <EvalBar score={evalScore} />}
+        {analyzeEnabled && <EvalBar score={evalScore} flipped={flipped} />}
         <div className="game-board-wrapper">
           {step === totalMoves && (
             <p className="game-result">{resultLabel[gameData.status] ?? "Game over"}</p>
           )}
           <Chessboard
             position={chess.fen()}
-            boardOrientation="white"
+            boardOrientation={flipped ? "black" : "white"}
             arePiecesDraggable={false}
             customSquareStyles={squareStyles}
             customArrows={arrows}
@@ -99,8 +100,8 @@ function GameReplayBoard({ gameData }: { gameData: GameType }) {
       </div>
 
       <div className="game-player">
-        <Link className="game-player-link" to={`/user?username=${gameData.whiteUsername}`}>
-          {gameData.whiteUsername}
+        <Link className="game-player-link" to={`/user?username=${flipped ? gameData.blackUsername : gameData.whiteUsername}`}>
+          {flipped ? gameData.blackUsername : gameData.whiteUsername}
         </Link>
       </div>
 
@@ -110,6 +111,7 @@ function GameReplayBoard({ gameData }: { gameData: GameType }) {
         <span className="game-replay-counter">{step} / {totalMoves}</span>
         <button className="btn" onClick={() => setStep((s) => Math.min(totalMoves, s + 1))} disabled={step === totalMoves}>{">"}</button>
         <button className="btn" onClick={() => setStep(totalMoves)} disabled={step === totalMoves}>{">>"}</button>
+        <button className="btn" onClick={() => setFlipped((v) => !v)}>Flip</button>
         <button
           className={`btn ${analyzeEnabled ? "btn-active" : ""}`}
           onClick={() => setAnalyzeEnabled((v) => !v)}
