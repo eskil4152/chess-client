@@ -110,14 +110,45 @@ export default function User() {
   return (
     <div className="profile">
       <div className="profile-card">
-        <img className="profile-avatar" src={responseUser.avatarUrl || "/default_profile.png"} alt="avatar" />
+        <img
+          className="profile-avatar"
+          src={responseUser.avatarUrl || "/default_profile.png"}
+          alt="avatar"
+        />
         <p className="profile-username">{responseUser.username}</p>
-        <p className="profile-elo">ELO: {responseUser.elo}</p>
+
+        <div className="profile-elo-grid">
+          <span />
+          <span>Bullet</span>
+          <span>Blitz</span>
+          <span>Rapid</span>
+          <span>Classical</span>
+
+          <span>Elo</span>
+          <span>{responseUser.bulletElo}</span>
+          <span>{responseUser.blitzElo}</span>
+          <span>{responseUser.rapidElo}</span>
+          <span>{responseUser.classicalElo}</span>
+
+          <span>Games</span>
+          <span>{responseUser.bulletGames}</span>
+          <span>{responseUser.blitzGames}</span>
+          <span>{responseUser.rapidGames}</span>
+          <span>{responseUser.classicalGames}</span>
+        </div>
+
         {responseUser.bio && <p className="profile-bio">{responseUser.bio}</p>}
         <div className="profile-actions">
-          <Link to={`/games/user?username=${responseUser.username}`} className="btn btn-pill">Game history</Link>
+          <Link
+            to={`/games/user?username=${responseUser.username}`}
+            className="btn btn-pill"
+          >
+            Game history
+          </Link>
           {isUser && (
-            <button className="btn btn-pill" onClick={openEdit}>Edit</button>
+            <button className="btn btn-pill" onClick={openEdit}>
+              Edit
+            </button>
           )}
         </div>
       </div>
@@ -132,7 +163,9 @@ export default function User() {
             value={bioInput}
             onChange={(e) => setBioInput(e.target.value)}
           />
-          <button className="btn" onClick={handleSaveBio}>Save bio</button>
+          <button className="btn" onClick={handleSaveBio}>
+            Save bio
+          </button>
           {bioError && <p className="profile-edit-error">{bioError}</p>}
           {bioSuccess && <p className="profile-edit-success">{bioSuccess}</p>}
 
@@ -144,9 +177,13 @@ export default function User() {
             value={avatarInput}
             onChange={(e) => setAvatarInput(e.target.value)}
           />
-          <button className="btn" onClick={handleSaveAvatar}>Save avatar</button>
+          <button className="btn" onClick={handleSaveAvatar}>
+            Save avatar
+          </button>
           {avatarError && <p className="profile-edit-error">{avatarError}</p>}
-          {avatarSuccess && <p className="profile-edit-success">{avatarSuccess}</p>}
+          {avatarSuccess && (
+            <p className="profile-edit-success">{avatarSuccess}</p>
+          )}
 
           <p className="profile-edit-section-title">Change password</p>
           <input
@@ -163,9 +200,15 @@ export default function User() {
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
           />
-          <button className="btn" onClick={handleSavePassword}>Save password</button>
-          {passwordError && <p className="profile-edit-error">{passwordError}</p>}
-          {passwordSuccess && <p className="profile-edit-success">{passwordSuccess}</p>}
+          <button className="btn" onClick={handleSavePassword}>
+            Save password
+          </button>
+          {passwordError && (
+            <p className="profile-edit-error">{passwordError}</p>
+          )}
+          {passwordSuccess && (
+            <p className="profile-edit-success">{passwordSuccess}</p>
+          )}
         </div>
       )}
 
@@ -176,7 +219,9 @@ export default function User() {
       )}
 
       {isUser && (
-        <button className="btn btn-danger" onClick={handleLogout}>Log out</button>
+        <button className="btn btn-danger" onClick={handleLogout}>
+          Log out
+        </button>
       )}
     </div>
   );

@@ -22,10 +22,22 @@
   margin: 0;
 }
 
-.profile-elo {
-  font-size: 1rem;
-  opacity: 0.75;
-  margin: 0;
+.profile-elo-grid {
+  display: grid;
+  grid-template-columns: auto repeat(4, 1fr);
+  gap: 4px 16px;
+  font-size: 0.95rem;
+  opacity: 0.85;
+}
+
+.profile-elo-grid span:nth-child(-n+5),
+.profile-elo-grid span:nth-child(6),
+.profile-elo-grid span:nth-child(11) {
+  font-weight: 600;
+  opacity: 0.65;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .profile-bio {
