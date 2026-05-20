@@ -31,15 +31,6 @@
   transition: background 0.15s ease;
 }
 
-.header-game-btn:hover {
-  background: rgba(255, 255, 255, 0.12);
-}
-
-.header-no-game {
-  font-size: 0.8rem;
-  opacity: 0.7;
-}
-
 .headerRight {
   justify-self: end;
   display: flex;

@@ -43,3 +43,9 @@
   display: flex;
   gap: 12px;
 }
+
+.game-status-msg {
+  font-size: 1.2rem;
+  font-weight: 600;
+  opacity: 0.65;
+}
