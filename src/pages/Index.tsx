@@ -1,5 +1,6 @@
 import { useAuth } from "../providers/AuthProvider";
 import { Link } from "react-router-dom";
+import PlaySelect from "../components/PlaySelect";
 
 export default function Index() {
   const { user } = useAuth();
@@ -7,7 +8,8 @@ export default function Index() {
   return (
     <div className="page">
       <h1>Welcome, {user?.username}!</h1>
-      <Link to="/play/select" className="btn">Play</Link>
+
+      <PlaySelect />
     </div>
   );
 }

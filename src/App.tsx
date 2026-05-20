@@ -6,7 +6,6 @@ import Register from "./pages/auth/Register";
 import Index from "./pages/Index";
 import Play from "./pages/games/Play";
 import PlayBot from "./pages/games/PlayBot";
-import PlaySelect from "./pages/games/PlaySelect";
 import Game from "./pages/games/Game";
 import User from "./pages/user/User";
 import GameHistory from "./pages/user/GameHistory";
@@ -31,7 +30,6 @@ function App() {
             <Route path="/" element={<Index />} />
             <Route path="/play" element={<Play />} />
             <Route path="/friends" element={<Friends />} />
-            <Route path="/play/select" element={<PlaySelect />} />
             <Route path="/play/bot/:difficulty" element={<PlayBot />} />
             <Route path="/game" element={<Game />} />
             <Route path="/user" element={<User />} />

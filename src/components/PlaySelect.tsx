@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useWebSocket } from "../../providers/WebSocketProvider";
-import getActiveGame from "../../features/api/getActiveGame";
-import { TIME_CONTROLS } from "../../constants/timeControls";
-import "../../styles/Play.css";
+import { useWebSocket } from "../providers/WebSocketProvider";
+import getActiveGame from "../features/api/getActiveGame";
+import { TIME_CONTROLS } from "../constants/timeControls";
+import "../styles/Play.css";
 
 const DIFFICULTIES = ["Easy", "Medium", "Hard"];
 
@@ -27,7 +27,6 @@ export default function PlaySelect() {
   return (
     <div className="page">
       <div className="play-section">
-        <h2>Human</h2>
         {TIME_CONTROLS.map(({ label, options }) => (
           <div key={label} className="play-time-group">
             <span className="play-time-group-label">{label}</span>
