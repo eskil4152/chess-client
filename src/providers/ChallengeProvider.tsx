@@ -1,4 +1,10 @@
-import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useWebSocket } from "./WebSocketProvider";
 import { useAuth } from "./AuthProvider";
 import {
@@ -26,7 +32,11 @@ export type OutgoingChallenge = {
 type ChallengeContextType = {
   incoming: IncomingChallenge | null;
   outgoing: OutgoingChallenge | null;
-  sendChallenge: (receiverId: string, receiverUsername: string, timeControl: string) => void;
+  sendChallenge: (
+    receiverId: string,
+    receiverUsername: string,
+    timeControl: string,
+  ) => void;
   cancelChallenge: () => void;
   respondToChallenge: (accepted: boolean) => void;
 };
@@ -45,18 +55,27 @@ export function ChallengeProvider({ children }: { children: React.ReactNode }) {
         const data = msg as WsIncomingChallenge;
         if (data.challenger === user?.username) {
           setOutgoing((prev) =>
-            prev ? { ...prev, challengeId: data.challengeId } : null
+            prev ? { ...prev, challengeId: data.challengeId } : null,
           );
         } else {
           playNewChallengeSound();
-          setIncoming({ challengeId: data.challengeId, challenger: data.challenger, timeControl: data.timeControl });
+          setIncoming({
+            challengeId: data.challengeId,
+            challenger: data.challenger,
+            timeControl: data.timeControl,
+          });
         }
       }
       if (msg.type === "CHALLENGE_CANCELLED") {
         const data = msg as WsChallengeCancelled;
-        setIncoming((prev) => (prev?.challengeId === data.challengeId ? null : prev));
+        setIncoming((prev) =>
+          prev?.challengeId === data.challengeId ? null : prev,
+        );
       }
-      if (msg.type === "CHALLENGE_DECLINED" || msg.type === "CHALLENGE_EXPIRED") {
+      if (
+        msg.type === "CHALLENGE_DECLINED" ||
+        msg.type === "CHALLENGE_EXPIRED"
+      ) {
         setOutgoing(null);
       }
       if (msg.type === "GAME_STARTED") {
@@ -66,26 +85,51 @@ export function ChallengeProvider({ children }: { children: React.ReactNode }) {
     });
   }, [subscribe, user?.username]);
 
-  const sendChallenge = useCallback((receiverId: string, receiverUsername: string, timeControl: string) => {
-    sendJson({ type: "CHALLENGE", receiver: receiverId, timeControl } satisfies WsSendChallenge);
-    setOutgoing({ challengeId: null, receiverUsername, timeControl });
-  }, [sendJson]);
+  const sendChallenge = useCallback(
+    (receiverId: string, receiverUsername: string, timeControl: string) => {
+      sendJson({
+        type: "CHALLENGE",
+        receiver: receiverId,
+        timeControl,
+      } satisfies WsSendChallenge);
+      setOutgoing({ challengeId: null, receiverUsername, timeControl });
+    },
+    [sendJson],
+  );
 
   const cancelChallenge = useCallback(() => {
     if (outgoing?.challengeId) {
-      sendJson({ type: "CANCEL_CHALLENGE", challengeId: outgoing.challengeId } satisfies WsSendCancelChallenge);
+      sendJson({
+        type: "CANCEL_CHALLENGE",
+        challengeId: outgoing.challengeId,
+      } satisfies WsSendCancelChallenge);
     }
     setOutgoing(null);
   }, [sendJson, outgoing]);
 
-  const respondToChallenge = useCallback((accepted: boolean) => {
-    if (!incoming) return;
-    sendJson({ type: "CHALLENGE_RESPONSE", challengeId: incoming.challengeId, accepted } satisfies WsSendChallengeResponse);
-    setIncoming(null);
-  }, [sendJson, incoming]);
+  const respondToChallenge = useCallback(
+    (accepted: boolean) => {
+      if (!incoming) return;
+      sendJson({
+        type: "CHALLENGE_RESPONSE",
+        challengeId: incoming.challengeId,
+        accepted,
+      } satisfies WsSendChallengeResponse);
+      setIncoming(null);
+    },
+    [sendJson, incoming],
+  );
 
   return (
-    <ChallengeContext.Provider value={{ incoming, outgoing, sendChallenge, cancelChallenge, respondToChallenge }}>
+    <ChallengeContext.Provider
+      value={{
+        incoming,
+        outgoing,
+        sendChallenge,
+        cancelChallenge,
+        respondToChallenge,
+      }}
+    >
       {children}
       <ChallengeOverlay />
     </ChallengeContext.Provider>
@@ -94,6 +138,7 @@ export function ChallengeProvider({ children }: { children: React.ReactNode }) {
 
 export function useChallenge() {
   const ctx = useContext(ChallengeContext);
-  if (!ctx) throw new Error("useChallenge must be used within ChallengeProvider");
+  if (!ctx)
+    throw new Error("useChallenge must be used within ChallengeProvider");
   return ctx;
 }

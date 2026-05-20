@@ -1,19 +1,22 @@
 :root {
-  --bg-main: #A15C2A;
-  --bg-secondary: #624C2B;
+  --bg-main: #a15c2a;
+  --bg-secondary: #624c2b;
   --color-pill: #3a3a5c;
 
-  --text-main: #FFFFFF;
+  --text-main: #ffffff;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: var(--bg-main);
@@ -62,11 +65,11 @@ a:hover {
 }
 
 .btn-danger {
-  background: #8B1A1A;
+  background: #8b1a1a;
 }
 
 .btn-danger:hover {
-  background: #8B1A1A;
+  background: #8b1a1a;
 }
 
 .btn-active {

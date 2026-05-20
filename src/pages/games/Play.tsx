@@ -17,13 +17,21 @@ export default function Play() {
 
   useEffect(() => {
     getActiveGame().then(({ status }) => {
-      if (status === 200) { navigate("/game"); return; }
+      if (status === 200) {
+        navigate("/game");
+        return;
+      }
       joinQueue(timeControl).then((res) => {
-        if (res.status === 409) { navigate("/game"); return; }
+        if (res.status === 409) {
+          navigate("/game");
+          return;
+        }
         joinedRef.current = true;
       });
     });
-    return () => { void leaveQueue(); };
+    return () => {
+      void leaveQueue();
+    };
   }, [navigate, timeControl]);
 
   useEffect(() => {
@@ -40,14 +48,19 @@ export default function Play() {
   }, [subscribe, navigate]);
 
   useEffect(() => {
-    const id = setInterval(() => setDotIndex((i) => (i + 1) % DOTS.length), 500);
+    const id = setInterval(
+      () => setDotIndex((i) => (i + 1) % DOTS.length),
+      500,
+    );
     return () => clearInterval(id);
   }, []);
 
   return (
     <div className="page">
       <p>Searching for opponent{DOTS[dotIndex]}</p>
-      <button className="btn" onClick={() => navigate("/play/select")}>Cancel</button>
+      <button className="btn" onClick={() => navigate("/play/select")}>
+        Cancel
+      </button>
     </div>
   );
 }

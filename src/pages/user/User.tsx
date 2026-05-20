@@ -71,7 +71,10 @@ export default function User() {
     setBioSuccess(null);
     try {
       const res = await editProfile("bio", bioInput);
-      if (res.status >= 400) { setBioError("Failed to update bio."); return; }
+      if (res.status >= 400) {
+        setBioError("Failed to update bio.");
+        return;
+      }
       setLocalUser({ ...responseUser, bio: bioInput || undefined });
       setBioSuccess("Bio updated.");
     } catch {
@@ -84,7 +87,10 @@ export default function User() {
     setAvatarSuccess(null);
     try {
       const res = await editProfile("avatarUrl", avatarInput);
-      if (res.status >= 400) { setAvatarError("Failed to update avatar."); return; }
+      if (res.status >= 400) {
+        setAvatarError("Failed to update avatar.");
+        return;
+      }
       setLocalUser({ ...responseUser, avatarUrl: avatarInput || null });
       setAvatarSuccess("Avatar updated.");
     } catch {
@@ -95,10 +101,18 @@ export default function User() {
   async function handleSavePassword() {
     setPasswordError(null);
     setPasswordSuccess(null);
-    if (!oldPassword || !newPassword) { setPasswordError("Both password fields are required."); return; }
+    if (!oldPassword || !newPassword) {
+      setPasswordError("Both password fields are required.");
+      return;
+    }
     try {
       const res = await editPassword(oldPassword, newPassword);
-      if (res.status >= 400) { setPasswordError("Failed to update password. Check your current password."); return; }
+      if (res.status >= 400) {
+        setPasswordError(
+          "Failed to update password. Check your current password.",
+        );
+        return;
+      }
       setOldPassword("");
       setNewPassword("");
       setPasswordSuccess("Password updated.");

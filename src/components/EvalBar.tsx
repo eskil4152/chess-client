@@ -37,10 +37,22 @@ export default function EvalBar({ score, flipped = false }: Props) {
   return (
     <div className="eval-bar">
       <div className={topClass} style={{ height: `${topPercent}%` }}>
-        {labelOnTop && <span className={`eval-bar-label eval-bar-label-${flipped ? "white" : "black"}`}>{label}</span>}
+        {labelOnTop && (
+          <span
+            className={`eval-bar-label eval-bar-label-${flipped ? "white" : "black"}`}
+          >
+            {label}
+          </span>
+        )}
       </div>
       <div className={bottomClass} style={{ height: `${bottomPercent}%` }}>
-        {!labelOnTop && <span className={`eval-bar-label eval-bar-label-${flipped ? "black" : "white"}`}>{label}</span>}
+        {!labelOnTop && (
+          <span
+            className={`eval-bar-label eval-bar-label-${flipped ? "black" : "white"}`}
+          >
+            {label}
+          </span>
+        )}
       </div>
     </div>
   );

@@ -12,7 +12,12 @@ type FriendCardProps = {
   avatar: string;
 };
 
-export default function FriendCard({ userId, username, bio, avatar }: FriendCardProps) {
+export default function FriendCard({
+  userId,
+  username,
+  bio,
+  avatar,
+}: FriendCardProps) {
   const navigate = useNavigate();
   const { sendChallenge, outgoing } = useChallenge();
   const [picking, setPicking] = useState(false);
@@ -32,8 +37,15 @@ export default function FriendCard({ userId, username, bio, avatar }: FriendCard
   }
 
   return (
-    <div className="friend-card" onClick={() => navigate(`/user?username=${username}`)}>
-      <img src={avatar || "/default_profile.png"} alt={username} className="friend-card-avatar" />
+    <div
+      className="friend-card"
+      onClick={() => navigate(`/user?username=${username}`)}
+    >
+      <img
+        src={avatar || "/default_profile.png"}
+        alt={username}
+        className="friend-card-avatar"
+      />
       <div className="friend-card-info">
         <span className="friend-card-username">{username}</span>
         {bio && <span className="friend-card-bio">{bio}</span>}
@@ -46,13 +58,20 @@ export default function FriendCard({ userId, username, bio, avatar }: FriendCard
           {hasPendingChallenge ? "Challenge sent" : "Challenge"}
         </button>
         {picking && (
-          <div className="friend-card-challenge" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="friend-card-challenge"
+            onClick={(e) => e.stopPropagation()}
+          >
             {TIME_CONTROLS.map(({ label, options }) => (
               <div key={label} className="friend-card-time-group">
                 <span className="friend-card-time-group-label">{label}</span>
                 <div className="friend-card-time-controls">
                   {options.map(({ value, display }) => (
-                    <button key={value} className="btn btn-pill" onClick={(e) => selectTimeControl(e, value)}>
+                    <button
+                      key={value}
+                      className="btn btn-pill"
+                      onClick={(e) => selectTimeControl(e, value)}
+                    >
                       {display}
                     </button>
                   ))}

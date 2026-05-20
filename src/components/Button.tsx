@@ -9,7 +9,14 @@ type ButtonProps = {
   fullWidth?: boolean;
 };
 
-export default function Button({ children, onClick, type = "button", variant = "default", disabled, fullWidth }: ButtonProps) {
+export default function Button({
+  children,
+  onClick,
+  type = "button",
+  variant = "default",
+  disabled,
+  fullWidth,
+}: ButtonProps) {
   const classes = [
     "btn",
     variant === "danger" ? "btn-danger" : "",
@@ -20,7 +27,12 @@ export default function Button({ children, onClick, type = "button", variant = "
     .join(" ");
 
   return (
-    <button className={classes} type={type} onClick={onClick} disabled={disabled}>
+    <button
+      className={classes}
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+    >
       {children}
     </button>
   );

@@ -38,10 +38,11 @@ function GameReplayBoard({ gameData }: { gameData: GameType }) {
 
   const isGameOver = chess.isGameOver();
 
-  const { bestMove, eval: engineEval, isAnalyzing } = useStockfish(
-    chess.fen(),
-    analyzeEnabled && !isGameOver,
-  );
+  const {
+    bestMove,
+    eval: engineEval,
+    isAnalyzing,
+  } = useStockfish(chess.fen(), analyzeEnabled && !isGameOver);
 
   const evalScore: EvalScore = (() => {
     if (!analyzeEnabled) return null;
@@ -53,12 +54,19 @@ function GameReplayBoard({ gameData }: { gameData: GameType }) {
     return engineEval;
   })();
 
-  const lastMove = step > 0 ? { from: history[step - 1].from, to: history[step - 1].to } : null;
+  const lastMove =
+    step > 0
+      ? { from: history[step - 1].from, to: history[step - 1].to }
+      : null;
 
   const squareStyles: Record<string, React.CSSProperties> = {};
   if (lastMove) {
-    squareStyles[lastMove.from] = { backgroundColor: "rgba(100, 200, 100, 0.45)" };
-    squareStyles[lastMove.to] = { backgroundColor: "rgba(100, 200, 100, 0.45)" };
+    squareStyles[lastMove.from] = {
+      backgroundColor: "rgba(100, 200, 100, 0.45)",
+    };
+    squareStyles[lastMove.to] = {
+      backgroundColor: "rgba(100, 200, 100, 0.45)",
+    };
   }
   if (chess.inCheck()) {
     const files = ["a", "b", "c", "d", "e", "f", "g", "h"];
@@ -66,19 +74,30 @@ function GameReplayBoard({ gameData }: { gameData: GameType }) {
     chess.board().forEach((row, ri) =>
       row.forEach((sq, fi) => {
         if (sq?.type === "k" && sq.color === turnColor)
-          squareStyles[files[fi] + (8 - ri)] = { backgroundColor: "rgba(220, 50, 50, 0.65)" };
-      })
+          squareStyles[files[fi] + (8 - ri)] = {
+            backgroundColor: "rgba(220, 50, 50, 0.65)",
+          };
+      }),
     );
   }
 
   const arrows: [Square, Square, string][] = bestMove
-    ? [[bestMove.from as Square, bestMove.to as Square, "rgba(0, 128, 255, 0.75)"]]
+    ? [
+        [
+          bestMove.from as Square,
+          bestMove.to as Square,
+          "rgba(0, 128, 255, 0.75)",
+        ],
+      ]
     : [];
 
   return (
     <div className="game">
       <div className="game-player">
-        <Link className="game-player-link" to={`/user?username=${flipped ? gameData.whiteUsername : gameData.blackUsername}`}>
+        <Link
+          className="game-player-link"
+          to={`/user?username=${flipped ? gameData.whiteUsername : gameData.blackUsername}`}
+        >
           {flipped ? gameData.whiteUsername : gameData.blackUsername}
         </Link>
       </div>
@@ -87,7 +106,9 @@ function GameReplayBoard({ gameData }: { gameData: GameType }) {
         {analyzeEnabled && <EvalBar score={evalScore} flipped={flipped} />}
         <div className="game-board-wrapper">
           {step === totalMoves && (
-            <p className="game-result">{resultLabel[gameData.status] ?? "Game over"}</p>
+            <p className="game-result">
+              {resultLabel[gameData.status] ?? "Game over"}
+            </p>
           )}
           <Chessboard
             position={chess.fen()}
@@ -100,23 +121,58 @@ function GameReplayBoard({ gameData }: { gameData: GameType }) {
       </div>
 
       <div className="game-player">
-        <Link className="game-player-link" to={`/user?username=${flipped ? gameData.blackUsername : gameData.whiteUsername}`}>
+        <Link
+          className="game-player-link"
+          to={`/user?username=${flipped ? gameData.blackUsername : gameData.whiteUsername}`}
+        >
           {flipped ? gameData.blackUsername : gameData.whiteUsername}
         </Link>
       </div>
 
       <div className="game-replay-controls">
-        <button className="btn" onClick={() => setStep(0)} disabled={step === 0}>{"<<"}</button>
-        <button className="btn" onClick={() => setStep((s) => Math.max(0, s - 1))} disabled={step === 0}>{"<"}</button>
-        <span className="game-replay-counter">{step} / {totalMoves}</span>
-        <button className="btn" onClick={() => setStep((s) => Math.min(totalMoves, s + 1))} disabled={step === totalMoves}>{">"}</button>
-        <button className="btn" onClick={() => setStep(totalMoves)} disabled={step === totalMoves}>{">>"}</button>
-        <button className="btn" onClick={() => setFlipped((v) => !v)}>Flip</button>
+        <button
+          className="btn"
+          onClick={() => setStep(0)}
+          disabled={step === 0}
+        >
+          {"<<"}
+        </button>
+        <button
+          className="btn"
+          onClick={() => setStep((s) => Math.max(0, s - 1))}
+          disabled={step === 0}
+        >
+          {"<"}
+        </button>
+        <span className="game-replay-counter">
+          {step} / {totalMoves}
+        </span>
+        <button
+          className="btn"
+          onClick={() => setStep((s) => Math.min(totalMoves, s + 1))}
+          disabled={step === totalMoves}
+        >
+          {">"}
+        </button>
+        <button
+          className="btn"
+          onClick={() => setStep(totalMoves)}
+          disabled={step === totalMoves}
+        >
+          {">>"}
+        </button>
+        <button className="btn" onClick={() => setFlipped((v) => !v)}>
+          Flip
+        </button>
         <button
           className={`btn ${analyzeEnabled ? "btn-active" : ""}`}
           onClick={() => setAnalyzeEnabled((v) => !v)}
         >
-          {analyzeEnabled ? (isAnalyzing ? "Analyzing…" : "Analysis on") : "Analyze"}
+          {analyzeEnabled
+            ? isAnalyzing
+              ? "Analyzing…"
+              : "Analysis on"
+            : "Analyze"}
         </button>
       </div>
     </div>

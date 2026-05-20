@@ -68,7 +68,10 @@ export default function AuthProvider({
       .finally(() => setLoading(false));
   }, [navigate]);
 
-  const value = useMemo(() => ({ user, setUser, loading, serverOffline }), [user, loading, serverOffline]);
+  const value = useMemo(
+    () => ({ user, setUser, loading, serverOffline }),
+    [user, loading, serverOffline],
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

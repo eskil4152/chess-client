@@ -74,11 +74,17 @@ export default function GameCard({
 
   const squareStyles: Record<string, React.CSSProperties> = {};
   if (lastMove) {
-    squareStyles[lastMove.from] = { backgroundColor: "rgba(100, 200, 100, 0.45)" };
-    squareStyles[lastMove.to] = { backgroundColor: "rgba(100, 200, 100, 0.45)" };
+    squareStyles[lastMove.from] = {
+      backgroundColor: "rgba(100, 200, 100, 0.45)",
+    };
+    squareStyles[lastMove.to] = {
+      backgroundColor: "rgba(100, 200, 100, 0.45)",
+    };
   }
   if (selectedSquare) {
-    squareStyles[selectedSquare] = { backgroundColor: "rgba(255, 255, 100, 0.55)" };
+    squareStyles[selectedSquare] = {
+      backgroundColor: "rgba(255, 255, 100, 0.55)",
+    };
   }
   if (dragOrigin) {
     squareStyles[dragOrigin] = { backgroundColor: "rgba(255, 255, 100, 0.55)" };
@@ -89,16 +95,34 @@ export default function GameCard({
     game.board().forEach((row, ri) =>
       row.forEach((sq, fi) => {
         if (sq?.type === "k" && sq.color === turnColor)
-          squareStyles[files[fi] + (8 - ri)] = { backgroundColor: "rgba(220, 50, 50, 0.65)" };
-      })
+          squareStyles[files[fi] + (8 - ri)] = {
+            backgroundColor: "rgba(220, 50, 50, 0.65)",
+          };
+      }),
     );
   }
 
   return (
     <div className="game">
       <div className="game-player">
-        <span><Link className="game-player-link" to={`/user?username=${opponentUsername}`}>{opponentUsername}</Link> - {opponentEloChange !== null ? opponentElo + opponentEloChange : opponentElo} {opponentEloChange !== null && <span>({formatEloChange(opponentEloChange)})</span>}</span>
-        {opponentMs !== null && <span className="game-clock">{formatMs(opponentMs)}</span>}
+        <span>
+          <Link
+            className="game-player-link"
+            to={`/user?username=${opponentUsername}`}
+          >
+            {opponentUsername}
+          </Link>{" "}
+          -{" "}
+          {opponentEloChange !== null
+            ? opponentElo + opponentEloChange
+            : opponentElo}{" "}
+          {opponentEloChange !== null && (
+            <span>({formatEloChange(opponentEloChange)})</span>
+          )}
+        </span>
+        {opponentMs !== null && (
+          <span className="game-clock">{formatMs(opponentMs)}</span>
+        )}
       </div>
 
       <div className="game-board-wrapper">
@@ -116,13 +140,30 @@ export default function GameCard({
       </div>
 
       <div className="game-player">
-        <span><Link className="game-player-link" to={`/user?username=${playerUsername}`}>{playerUsername}</Link> - {playerEloChange !== null ? playerElo + playerEloChange : playerElo} {playerEloChange !== null && <span>({formatEloChange(playerEloChange)})</span>}</span>
-        {playerMs !== null && <span className="game-clock">{formatMs(playerMs)}</span>}
+        <span>
+          <Link
+            className="game-player-link"
+            to={`/user?username=${playerUsername}`}
+          >
+            {playerUsername}
+          </Link>{" "}
+          - {playerEloChange !== null ? playerElo + playerEloChange : playerElo}{" "}
+          {playerEloChange !== null && (
+            <span>({formatEloChange(playerEloChange)})</span>
+          )}
+        </span>
+        {playerMs !== null && (
+          <span className="game-clock">{formatMs(playerMs)}</span>
+        )}
       </div>
 
       <div className="game-actions">
-        <button className="btn btn-danger" onClick={resign} disabled={!!result}>Resign</button>
-        <button className="btn" onClick={onDraw} disabled={!!result}>{drawLabel}</button>
+        <button className="btn btn-danger" onClick={resign} disabled={!!result}>
+          Resign
+        </button>
+        <button className="btn" onClick={onDraw} disabled={!!result}>
+          {drawLabel}
+        </button>
       </div>
     </div>
   );

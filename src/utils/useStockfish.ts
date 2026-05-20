@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 
 type BestMove = { from: string; to: string } | null;
-export type EvalScore = { type: "cp"; value: number } | { type: "mate"; value: number } | null;
+export type EvalScore =
+  | { type: "cp"; value: number }
+  | { type: "mate"; value: number }
+  | null;
 
 export default function useStockfish(
   fen: string,
@@ -29,7 +32,10 @@ export default function useStockfish(
         const mateMatch = line.match(/score mate (-?\d+)/);
         const cpMatch = line.match(/score cp (-?\d+)/);
         if (mateMatch) {
-          setEvalScore({ type: "mate", value: flip * parseInt(mateMatch[1], 10) });
+          setEvalScore({
+            type: "mate",
+            value: flip * parseInt(mateMatch[1], 10),
+          });
         } else if (cpMatch) {
           setEvalScore({ type: "cp", value: flip * parseInt(cpMatch[1], 10) });
         }
