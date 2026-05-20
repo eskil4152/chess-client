@@ -24,7 +24,7 @@ export default function Friends() {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error occurred</div>;
 
-  const friends = response?.data as FriendType[] ?? [];
+  const friends = (response?.data as FriendType[]) ?? [];
 
   return (
     <div className="profile">
@@ -39,7 +39,9 @@ export default function Friends() {
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
             />
-            <button className="btn" type="submit">Search</button>
+            <button className="btn" type="submit">
+              Search
+            </button>
           </div>
         </form>
 

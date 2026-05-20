@@ -43,7 +43,9 @@ export default function WebSocketProvider() {
   const wsUrl = process.env.REACT_APP_WS_API_URL;
 
   const navigateRef = useRef(navigate);
-  useEffect(() => { navigateRef.current = navigate; }, [navigate]);
+  useEffect(() => {
+    navigateRef.current = navigate;
+  }, [navigate]);
 
   const subscribe = useCallback((listener: (event: WsMessage) => void) => {
     listenersRef.current.add(listener);
@@ -72,7 +74,8 @@ export default function WebSocketProvider() {
         reconnectRef.current = 0;
         setConnected(true);
         const ping = setInterval(() => {
-          if (ws.readyState === WebSocket.OPEN) ws.send(JSON.stringify({ type: "PING" }));
+          if (ws.readyState === WebSocket.OPEN)
+            ws.send(JSON.stringify({ type: "PING" }));
         }, 20000);
         ws.addEventListener("close", () => clearInterval(ping));
       };
@@ -80,7 +83,8 @@ export default function WebSocketProvider() {
       ws.onmessage = (event) => {
         try {
           const data: WsMessage = JSON.parse(event.data);
-          if (data.type === "ERROR" && data.code === 401) navigateRef.current("/login");
+          if (data.type === "ERROR" && data.code === 401)
+            navigateRef.current("/login");
           if (data.type === "GAME_STARTED") navigateRef.current("/game");
           listenersRef.current.forEach((l) => l(data));
         } catch {}
@@ -122,6 +126,7 @@ export default function WebSocketProvider() {
 
 export function useWebSocket() {
   const ctx = useContext(WebSocketContext);
-  if (!ctx) throw new Error("useWebSocket must be used inside WebSocketProvider");
+  if (!ctx)
+    throw new Error("useWebSocket must be used inside WebSocketProvider");
   return ctx;
 }

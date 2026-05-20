@@ -6,7 +6,6 @@
   padding: 12px clamp(12px, 4vw, 30px);
 }
 
-
 .headerLeft {
   justify-self: start;
 }

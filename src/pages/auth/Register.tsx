@@ -43,10 +43,28 @@ export default function Register() {
       <div className="auth-card">
         <h1>Register</h1>
 
-        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          <FormInput placeholder="Username" value={username} onChange={setUsername} disabled={loading} />
-          <FormInput type={passwordVisible ? "text" : "password"} placeholder="Password" value={password} onChange={setPassword} disabled={loading} />
-          <Button type="button" variant="pill" onClick={() => setPasswordVisible(!passwordVisible)}>
+        <form
+          onSubmit={handleSubmit}
+          style={{ display: "flex", flexDirection: "column", gap: 12 }}
+        >
+          <FormInput
+            placeholder="Username"
+            value={username}
+            onChange={setUsername}
+            disabled={loading}
+          />
+          <FormInput
+            type={passwordVisible ? "text" : "password"}
+            placeholder="Password"
+            value={password}
+            onChange={setPassword}
+            disabled={loading}
+          />
+          <Button
+            type="button"
+            variant="pill"
+            onClick={() => setPasswordVisible(!passwordVisible)}
+          >
             {passwordVisible ? "Hide password" : "Show password"}
           </Button>
           <Button type="submit" variant="pill" disabled={loading} fullWidth>
@@ -56,7 +74,9 @@ export default function Register() {
 
         {error && <p className="auth-error">{error}</p>}
 
-        <p className="auth-footer">Already have an account? <Link to="/login">Log In</Link></p>
+        <p className="auth-footer">
+          Already have an account? <Link to="/login">Log In</Link>
+        </p>
       </div>
     </div>
   );

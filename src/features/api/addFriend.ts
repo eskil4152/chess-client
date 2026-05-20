@@ -6,7 +6,7 @@ export default async function addFriend(username: string) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({username: username}),
+    body: JSON.stringify({ username: username }),
     credentials: "include",
   });
 }

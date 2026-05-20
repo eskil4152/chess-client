@@ -4,9 +4,13 @@ const CSRF_METHODS = new Set(["POST", "PUT", "DELETE", "PATCH"]);
 
 export default async function fetchJSON(url: string, options?: RequestInit) {
   const method = (options?.method ?? "GET").toUpperCase();
-  const csrfHeaders: Record<string, string> = CSRF_METHODS.has(method) ? { "X-XSRF-TOKEN": getCsrfToken() } : {};
+  const csrfHeaders: Record<string, string> = CSRF_METHODS.has(method)
+    ? { "X-XSRF-TOKEN": getCsrfToken() }
+    : {};
 
-  const contentTypeHeader: Record<string, string> = CSRF_METHODS.has(method) ? { "Content-Type": "application/json" } : {};
+  const contentTypeHeader: Record<string, string> = CSRF_METHODS.has(method)
+    ? { "Content-Type": "application/json" }
+    : {};
 
   const response = await fetch(url, {
     method: "GET",

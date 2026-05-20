@@ -14,7 +14,9 @@ export default function Header() {
       </div>
 
       <div className="headerCenter">
-        <Link to={"/game"}><button className="header-game-btn">GAME</button></Link>
+        <Link to={"/game"}>
+          <button className="header-game-btn">GAME</button>
+        </Link>
       </div>
 
       <div className="headerRight">

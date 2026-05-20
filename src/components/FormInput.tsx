@@ -8,7 +8,13 @@ type FormInputProps = {
   disabled?: boolean;
 };
 
-export default function FormInput({ type = "text", placeholder, value, onChange, disabled }: FormInputProps) {
+export default function FormInput({
+  type = "text",
+  placeholder,
+  value,
+  onChange,
+  disabled,
+}: FormInputProps) {
   return (
     <input
       className="form-input"

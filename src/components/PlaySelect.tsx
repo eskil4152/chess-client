@@ -35,7 +35,9 @@ export default function PlaySelect() {
                 <button
                   key={value}
                   className="btn btn-pill"
-                  onClick={() => navigate("/play", { state: { timeControl: value } })}
+                  onClick={() =>
+                    navigate("/play", { state: { timeControl: value } })
+                  }
                 >
                   {display}
                 </button>

@@ -30,7 +30,7 @@
   opacity: 0.85;
 }
 
-.profile-elo-grid span:nth-child(-n+5),
+.profile-elo-grid span:nth-child(-n + 5),
 .profile-elo-grid span:nth-child(6),
 .profile-elo-grid span:nth-child(11) {
   font-weight: 600;
@@ -119,7 +119,10 @@
 }
 
 .game-card-link:hover .game-card {
-  background: var(--bg-hover, color-mix(in srgb, var(--bg-secondary) 85%, white));
+  background: var(
+    --bg-hover,
+    color-mix(in srgb, var(--bg-secondary) 85%, white)
+  );
 }
 
 .game-card {

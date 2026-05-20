@@ -18,7 +18,9 @@ export default function ServerOffline() {
   return (
     <div className="page">
       <p>Server is temporarily offline.</p>
-      <button className="btn" onClick={check}>Try again</button>
+      <button className="btn" onClick={check}>
+        Try again
+      </button>
     </div>
   );
 }
