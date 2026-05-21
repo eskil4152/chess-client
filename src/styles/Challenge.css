@@ -48,11 +48,11 @@
 }
 
 .challenge-btn-accept {
-  background: #2a7a4b;
+  background: var(--color-success-bg);
 }
 
 .challenge-btn-decline {
-  background: #7a2a2a;
+  background: var(--color-danger);
 }
 
 .friend-card-challenge {
@@ -64,10 +64,6 @@
 
 .friend-card-challenge-label {
   font-size: 0.8rem;
-  opacity: 0.7;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 .friend-card-time-group {
@@ -79,8 +75,6 @@
 .friend-card-time-group-label {
   font-size: 0.75rem;
   opacity: 0.6;
-  font-weight: 600;
-  text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 

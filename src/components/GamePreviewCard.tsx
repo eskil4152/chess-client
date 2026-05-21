@@ -28,7 +28,7 @@ export default function GamePreviewCard({
 
   return (
     <Link to={`/games/${gameId}`} className="game-card-link">
-      <div className="game-card">
+      <div className="card-sm game-card">
         <div className="game-card-players">
           <span>White: {white}</span>
           <span>Black: {black}</span>

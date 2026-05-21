@@ -7,10 +7,6 @@
 
 .user-search-label {
   font-size: 0.85rem;
-  font-weight: 600;
-  opacity: 0.7;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 .user-search-row {
@@ -30,31 +26,15 @@
   gap: 10px;
 }
 
-.friend-list h2 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin: 0 0 4px;
-  opacity: 0.8;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
 
 .friend-card {
   cursor: pointer;
-  background: var(--bg-secondary);
-  border-radius: 8px;
-  padding: 14px 18px;
-  display: flex;
-  align-items: center;
   gap: 14px;
-  font-size: 0.95rem;
 }
 
 .friend-card-avatar {
   width: 44px;
   height: 44px;
-  border-radius: 50%;
-  object-fit: cover;
   flex-shrink: 0;
 }
 

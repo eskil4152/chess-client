@@ -9,7 +9,7 @@
 }
 
 .eval-bar-black {
-  background: #1a1a1a;
+  background: var(--color-eval-dark);
   position: relative;
   transition: height 0.4s ease;
   display: flex;
@@ -18,7 +18,7 @@
 }
 
 .eval-bar-white {
-  background: #f0f0f0;
+  background: var(--color-eval-light);
   position: relative;
   transition: height 0.4s ease;
   display: flex;
@@ -34,9 +34,9 @@
 }
 
 .eval-bar-label-black {
-  color: #f0f0f0;
+  color: var(--color-eval-light);
 }
 
 .eval-bar-label-white {
-  color: #1a1a1a;
+  color: var(--color-eval-dark);
 }

@@ -38,13 +38,13 @@ export default function FriendCard({
 
   return (
     <div
-      className="friend-card"
+      className="card-sm friend-card"
       onClick={() => navigate(`/user?username=${username}`)}
     >
       <img
         src={avatar || "/default_profile.png"}
         alt={username}
-        className="friend-card-avatar"
+        className="avatar friend-card-avatar"
       />
       <div className="friend-card-info">
         <span className="friend-card-username">{username}</span>
@@ -64,7 +64,7 @@ export default function FriendCard({
           >
             {TIME_CONTROLS.map(({ label, options }) => (
               <div key={label} className="friend-card-time-group">
-                <span className="friend-card-time-group-label">{label}</span>
+                <span className="label-upper friend-card-time-group-label">{label}</span>
                 <div className="friend-card-time-controls">
                   {options.map(({ value, display }) => (
                     <button

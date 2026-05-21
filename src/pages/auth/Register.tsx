@@ -40,7 +40,7 @@ export default function Register() {
 
   return (
     <div className="auth-page">
-      <div className="auth-card">
+      <div className="card auth-card">
         <h1>Register</h1>
 
         <form
@@ -72,7 +72,7 @@ export default function Register() {
           </Button>
         </form>
 
-        {error && <p className="auth-error">{error}</p>}
+        {error && <p className="msg-error">{error}</p>}
 
         <p className="auth-footer">
           Already have an account? <Link to="/login">Log In</Link>

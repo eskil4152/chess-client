@@ -40,7 +40,7 @@ export default function Login() {
 
   return (
     <div className="auth-page">
-      <div className="auth-card">
+      <div className="card auth-card">
         <h1>Log In</h1>
 
         <form
@@ -72,7 +72,7 @@ export default function Login() {
           </Button>
         </form>
 
-        {error && <p className="auth-error">{error}</p>}
+        {error && <p className="msg-error">{error}</p>}
 
         <p className="auth-footer">
           No account? <Link to="/register">Register</Link>

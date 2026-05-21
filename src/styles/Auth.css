@@ -7,13 +7,9 @@
 }
 
 .auth-card {
-  background: var(--bg-secondary);
-  border-radius: 12px;
   padding: 40px 36px;
   width: 100%;
   max-width: 380px;
-  display: flex;
-  flex-direction: column;
   gap: 16px;
 }
 
@@ -23,11 +19,6 @@
   font-weight: 700;
 }
 
-.auth-error {
-  font-size: 0.9rem;
-  color: #ff6b6b;
-  margin: 0;
-}
 
 .auth-footer {
   font-size: 0.9rem;
@@ -38,8 +29,8 @@
 .form-input {
   width: 100%;
   padding: 10px 14px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: var(--bg-input);
+  border: 1px solid var(--border-input);
   border-radius: 8px;
   color: var(--text-main);
   font-size: 1rem;
@@ -49,7 +40,7 @@
 }
 
 .form-input:focus {
-  border-color: rgba(255, 255, 255, 0.4);
+  border-color: var(--border-input-focus);
 }
 
 .form-input::placeholder {
