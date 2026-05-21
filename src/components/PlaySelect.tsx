@@ -1,14 +1,13 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useWebSocket } from "../providers/WebSocketProvider";
-import getActiveGame from "../features/api/getActiveGame";
 import { TIME_CONTROLS } from "../constants/timeControls";
 import "../styles/Play.css";
 
 const DIFFICULTIES = ["Easy", "Medium", "Hard"];
 
 export default function PlaySelect() {
-  const { subscribe, connected } = useWebSocket();
+  const { subscribe } = useWebSocket();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,13 +15,6 @@ export default function PlaySelect() {
       if (msg.type === "GAME_STARTED") navigate("/game");
     });
   }, [subscribe, navigate]);
-
-  useEffect(() => {
-    if (!connected) return;
-    getActiveGame().then(({ status }) => {
-      if (status === 200) navigate("/game");
-    });
-  }, [connected, navigate]);
 
   return (
     <div className="page">
