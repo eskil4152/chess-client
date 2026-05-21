@@ -4,6 +4,27 @@
   --color-pill: #3a3a5c;
 
   --text-main: #ffffff;
+
+  --color-danger: #8b1a1a;
+  --color-danger-bg: #6b1a1a;
+  --color-danger-text: #f4a0a0;
+
+  --color-active: #3a6ea8;
+
+  --color-success-bg: #2d6a4f;
+  --color-success-text: #b7e4c7;
+  --color-success-accent: #6bff9e;
+
+  --color-error: #ff6b6b;
+
+  --color-eval-dark: #1a1a1a;
+  --color-eval-light: #f0f0f0;
+
+  --border-subtle: rgba(255, 255, 255, 0.1);
+  --border-input: rgba(255, 255, 255, 0.15);
+  --border-input-focus: rgba(255, 255, 255, 0.4);
+  --bg-input: rgba(255, 255, 255, 0.08);
+  --bg-hover: rgba(255, 255, 255, 0.12);
 }
 
 html,
@@ -29,7 +50,7 @@ a {
 }
 
 a:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--bg-hover);
 }
 
 .page {
@@ -65,19 +86,19 @@ a:hover {
 }
 
 .btn-danger {
-  background: #8b1a1a;
+  background: var(--color-danger);
 }
 
 .btn-danger:hover {
-  background: #8b1a1a;
+  background: var(--color-danger);
 }
 
 .btn-active {
-  background: #3a6ea8;
+  background: var(--color-active);
 }
 
 .btn-active:hover {
-  background: #3a6ea8;
+  background: var(--color-active);
 }
 
 .btn-pill {

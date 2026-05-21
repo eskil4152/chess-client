@@ -47,13 +47,13 @@
 }
 
 .status-bar.connected {
-  background: #2d6a4f;
-  color: #b7e4c7;
+  background: var(--color-success-bg);
+  color: var(--color-success-text);
 }
 
 .status-bar.disconnected {
-  background: #6b1a1a;
-  color: #f4a0a0;
+  background: var(--color-danger-bg);
+  color: var(--color-danger-text);
 }
 
 .header a {

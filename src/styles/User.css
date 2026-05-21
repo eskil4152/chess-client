@@ -45,7 +45,7 @@
   opacity: 0.85;
   margin: 0;
   padding-top: 8px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--border-subtle);
 }
 
 .profile-actions {
@@ -86,13 +86,13 @@
 
 .profile-edit-error {
   font-size: 0.9rem;
-  color: #ff6b6b;
+  color: var(--color-error);
   margin: 0;
 }
 
 .profile-edit-success {
   font-size: 0.9rem;
-  color: #6bff9e;
+  color: var(--color-success-accent);
   margin: 0;
 }
 

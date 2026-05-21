@@ -48,11 +48,11 @@
 }
 
 .challenge-btn-accept {
-  background: #2a7a4b;
+  background: var(--color-success-bg);
 }
 
 .challenge-btn-decline {
-  background: #7a2a2a;
+  background: var(--color-danger);
 }
 
 .friend-card-challenge {
