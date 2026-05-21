@@ -1,6 +1,7 @@
 {
   "name": "chess-client",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "dependencies": {
     "@testing-library/dom": "^10.4.1",
@@ -8,7 +9,6 @@
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.126",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "chess.js": "^1.4.0",
@@ -16,20 +16,20 @@
     "react-chessboard": "^4.7.3",
     "react-dom": "^19.2.5",
     "react-router-dom": "^7.14.2",
-    "react-scripts": "5.0.1",
     "stockfish": "^18.0.7",
-    "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
+    "typescript": "^6.0.3"
   },
   "devDependencies": {
+    "@types/node": "^25.9.1",
+    "@vitejs/plugin-react": "^6.0.2",
     "prettier": "^3.8.3",
+    "vite": "^8.0.14",
     "yaml": "^2.8.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "eslintConfig": {
     "extends": [

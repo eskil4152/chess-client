@@ -1,7 +1,7 @@
 import fetchJSON from "../../utils/fetchJSON";
 
 export default async function getActiveGame() {
-  return fetchJSON(`${process.env.REACT_APP_API_URL}/api/games/active`, {
+  return fetchJSON(`${import.meta.env.VITE_API_URL}/api/games/active`, {
     credentials: "include",
   });
 }
