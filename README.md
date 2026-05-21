@@ -213,14 +213,14 @@ All routes except `/login`, `/register`, and `/server-offline` require authentic
 
 The app reads two environment variables at build time:
 
-| Variable               | Description                                                      |
-|------------------------|------------------------------------------------------------------|
-| `REACT_APP_API_URL`    | Base URL for the REST API (e.g. `http://localhost:8080`)         |
-| `REACT_APP_WS_API_URL` | Base URL for the WebSocket endpoint (e.g. `ws://localhost:8080`) |
+| Variable       | Description                                                      |
+|----------------|------------------------------------------------------------------|
+| `VITE_API_URL` | Base URL for the REST API (e.g. `http://localhost:8080`)         |
+| `VITE_WS_URL`  | Base URL for the WebSocket endpoint (e.g. `ws://localhost:8080`) |
 
 Set these in a `.env` file at the project root for local development:
 
 ```
-REACT_APP_API_URL=http://localhost:8080
-REACT_APP_WS_API_URL=ws://localhost:8080
+VITE_API_URL=http://localhost:8080
+VITE_WS_URL=ws://localhost:8080
 ```
