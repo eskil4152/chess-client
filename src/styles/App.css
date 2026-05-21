@@ -1,15 +1,16 @@
 :root {
-  --bg-main: #a15c2a;
-  --bg-secondary: #624c2b;
-  --color-pill: #3a3a5c;
-
-  --text-main: #ffffff;
+  --bg-main: #664d3c;       /* walnut */
+  --bg-secondary: #443429;  /* worn walnut */
+  --color-pill: #4a4866;    /* cool indigo */
+  --color-btn: #c4ae8c;     /* warm cream button */
+  --text-main: #f2ede4;     /* cream paper */
+  --accent-brass: #c68b5c;  /* hot states only */
 
   --color-danger: #8b1a1a;
   --color-danger-bg: #6b1a1a;
   --color-danger-text: #f4a0a0;
 
-  --color-active: #3a6ea8;
+  --color-active: var(--accent-brass);
 
   --color-success-bg: #2d6a4f;
   --color-success-text: #b7e4c7;
@@ -17,14 +18,14 @@
 
   --color-error: #ff6b6b;
 
-  --color-eval-dark: #1a1a1a;
-  --color-eval-light: #f0f0f0;
+  --color-eval-dark: #1c1410;
+  --color-eval-light: #f2ede4;
 
-  --border-subtle: rgba(255, 255, 255, 0.1);
-  --border-input: rgba(255, 255, 255, 0.15);
-  --border-input-focus: rgba(255, 255, 255, 0.4);
-  --bg-input: rgba(255, 255, 255, 0.08);
-  --bg-hover: rgba(255, 255, 255, 0.12);
+  --border-subtle: rgba(242, 237, 228, 0.1);
+  --border-input: rgba(242, 237, 228, 0.15);
+  --border-input-focus: rgba(242, 237, 228, 0.4);
+  --bg-input: rgba(242, 237, 228, 0.08);
+  --bg-hover: rgba(242, 237, 228, 0.12);
 }
 
 html,
@@ -58,20 +59,69 @@ a:hover {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 60px 20px;
+  padding: 40px 20px;
   text-align: center;
 }
 
 .page h1 {
   font-size: clamp(2rem, 5vw, 3.5rem);
-  margin: 0 0 40px;
+  margin: 0 0 16px;
+}
+
+.card {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-sm {
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  padding: 14px 18px;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.label-upper {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.7;
+}
+
+.section-h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 4px;
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.msg-error {
+  font-size: 0.9rem;
+  margin: 0;
+  color: var(--color-error);
+}
+
+.msg-success {
+  font-size: 0.9rem;
+  margin: 0;
+  color: var(--color-success-accent);
 }
 
 .btn {
   display: inline-block;
   padding: 12px 28px;
-  background: var(--bg-secondary);
-  color: var(--text-main);
+  background: var(--color-btn);
+  color: var(--bg-secondary);
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 600;
@@ -82,11 +132,12 @@ a:hover {
 
 .btn:hover {
   opacity: 0.85;
-  background: var(--bg-secondary);
+  background: var(--color-btn);
 }
 
 .btn-danger {
   background: var(--color-danger);
+  color: var(--text-main);
 }
 
 .btn-danger:hover {
@@ -102,10 +153,5 @@ a:hover {
 }
 
 .btn-pill {
-  background: var(--color-pill);
   border-radius: 999px;
-}
-
-.btn-pill:hover {
-  background: var(--color-pill);
 }

@@ -30,7 +30,7 @@ export default function Friends() {
     <div className="profile">
       <div className="friend-list">
         <form className="user-search" onSubmit={handleSearch}>
-          <label className="user-search-label">Search for user</label>
+          <label className="label-upper user-search-label">Search for user</label>
           <div className="user-search-row">
             <input
               className="form-input"
@@ -45,7 +45,7 @@ export default function Friends() {
           </div>
         </form>
 
-        <h2>Friends</h2>
+        <h2 className="section-h2">Friends</h2>
         {friends.length > 0
           ? friends.map((friend: FriendType) => (
               <FriendCard

@@ -7,13 +7,9 @@
 }
 
 .auth-card {
-  background: var(--bg-secondary);
-  border-radius: 12px;
   padding: 40px 36px;
   width: 100%;
   max-width: 380px;
-  display: flex;
-  flex-direction: column;
   gap: 16px;
 }
 
@@ -23,11 +19,6 @@
   font-weight: 700;
 }
 
-.auth-error {
-  font-size: 0.9rem;
-  color: var(--color-error);
-  margin: 0;
-}
 
 .auth-footer {
   font-size: 0.9rem;

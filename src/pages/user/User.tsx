@@ -61,6 +61,10 @@ export default function User() {
   }
 
   function openEdit() {
+    if (editOpen) {
+      setEditOpen(false);
+      return;
+    }
     setBioInput(responseUser.bio ?? "");
     setAvatarInput(responseUser.avatarUrl ?? "");
     setEditOpen(true);
@@ -77,6 +81,7 @@ export default function User() {
       }
       setLocalUser({ ...responseUser, bio: bioInput || undefined });
       setBioSuccess("Bio updated.");
+      setEditOpen(false);
     } catch {
       setBioError("Something went wrong.");
     }
@@ -93,6 +98,7 @@ export default function User() {
       }
       setLocalUser({ ...responseUser, avatarUrl: avatarInput || null });
       setAvatarSuccess("Avatar updated.");
+      setEditOpen(false);
     } catch {
       setAvatarError("Something went wrong.");
     }
@@ -116,6 +122,7 @@ export default function User() {
       setOldPassword("");
       setNewPassword("");
       setPasswordSuccess("Password updated.");
+      setEditOpen(false);
     } catch {
       setPasswordError("Something went wrong.");
     }
@@ -123,9 +130,9 @@ export default function User() {
 
   return (
     <div className="profile">
-      <div className="profile-card">
+      <div className="card profile-card">
         <img
-          className="profile-avatar"
+          className="avatar profile-avatar"
           src={responseUser.avatarUrl || "/default_profile.png"}
           alt="avatar"
         />
@@ -168,8 +175,8 @@ export default function User() {
       </div>
 
       {isUser && editOpen && (
-        <div className="profile-edit-card">
-          <p className="profile-edit-section-title">Bio</p>
+        <div className="card profile-edit-card">
+          <p className="label-upper profile-edit-section-title">Bio</p>
           <input
             className="form-input"
             type="text"
@@ -180,10 +187,10 @@ export default function User() {
           <button className="btn" onClick={handleSaveBio}>
             Save bio
           </button>
-          {bioError && <p className="profile-edit-error">{bioError}</p>}
-          {bioSuccess && <p className="profile-edit-success">{bioSuccess}</p>}
+          {bioError && <p className="msg-error">{bioError}</p>}
+          {bioSuccess && <p className="msg-success">{bioSuccess}</p>}
 
-          <p className="profile-edit-section-title">Avatar URL</p>
+          <p className="label-upper profile-edit-section-title">Avatar URL</p>
           <input
             className="form-input"
             type="text"
@@ -194,12 +201,12 @@ export default function User() {
           <button className="btn" onClick={handleSaveAvatar}>
             Save avatar
           </button>
-          {avatarError && <p className="profile-edit-error">{avatarError}</p>}
+          {avatarError && <p className="msg-error">{avatarError}</p>}
           {avatarSuccess && (
-            <p className="profile-edit-success">{avatarSuccess}</p>
+            <p className="msg-success">{avatarSuccess}</p>
           )}
 
-          <p className="profile-edit-section-title">Change password</p>
+          <p className="label-upper profile-edit-section-title">Change password</p>
           <input
             className="form-input"
             type="password"
@@ -218,10 +225,10 @@ export default function User() {
             Save password
           </button>
           {passwordError && (
-            <p className="profile-edit-error">{passwordError}</p>
+            <p className="msg-error">{passwordError}</p>
           )}
           {passwordSuccess && (
-            <p className="profile-edit-success">{passwordSuccess}</p>
+            <p className="msg-success">{passwordSuccess}</p>
           )}
         </div>
       )}

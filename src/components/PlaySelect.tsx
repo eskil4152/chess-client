@@ -29,7 +29,7 @@ export default function PlaySelect() {
       <div className="play-section">
         {TIME_CONTROLS.map(({ label, options }) => (
           <div key={label} className="play-time-group">
-            <span className="play-time-group-label">{label}</span>
+            <span className="label-upper play-time-group-label">{label}</span>
             <div className="play-time-controls">
               {options.map(({ value, display }) => (
                 <button
@@ -48,7 +48,7 @@ export default function PlaySelect() {
       </div>
 
       <div className="play-section">
-        <h2>Bot</h2>
+        <h2 className="section-h2">Bot</h2>
         <div className="play-bot-difficulties">
           {DIFFICULTIES.map((d) => (
             <button

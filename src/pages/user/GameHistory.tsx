@@ -23,7 +23,7 @@ export default function GameHistory() {
   return (
     <div className="profile">
       <div className="game-list">
-        <h2>{username}'s games</h2>
+        <h2 className="section-h2">{username}'s games</h2>
         {gameHistory.length > 0
           ? gameHistory.map((game: GamePreviewType) => (
               <GamePreviewCard
