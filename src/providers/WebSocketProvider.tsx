@@ -40,7 +40,7 @@ export default function WebSocketProvider() {
 
   const [connected, setConnected] = useState(false);
 
-  const wsUrl = process.env.REACT_APP_WS_API_URL;
+  const wsUrl = import.meta.env.VITE_WS_URL;
 
   const navigateRef = useRef(navigate);
   useEffect(() => {

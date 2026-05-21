@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from "react";
 
 export default function ServerOffline() {
-  const url = process.env.REACT_APP_API_URL;
+  const url = import.meta.env.VITE_API_URL;
 
   const check = useCallback(async () => {
     try {
