@@ -158,9 +158,24 @@ export default function User() {
           <span>{responseUser.classicalGames}</span>
         </div>
 
-        {
-          responseUser.activeGameId != null ? <Link to={"/game/"+responseUser.activeGameId}>Active game</Link> : "Player is not playing"
-        }
+        {!isUser && (
+          <div className="card-sm profile-active-game">
+            {responseUser.activeGameId != null ? (
+              <>
+                <span className="profile-active-dot" />
+                <span className="label-upper profile-active-label">Live game</span>
+                <Link
+                  to={"/game/" + responseUser.activeGameId}
+                  className="btn btn-pill profile-spectate-btn"
+                >
+                  Spectate
+                </Link>
+              </>
+            ) : (
+              <span className="label-upper">Not in a game</span>
+            )}
+          </div>
+        )}
 
         {responseUser.bio && <p className="profile-bio">{responseUser.bio}</p>}
         <div className="profile-actions">
