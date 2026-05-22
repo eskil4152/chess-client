@@ -1,20 +1,11 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useWebSocket } from "../providers/WebSocketProvider";
 import { TIME_CONTROLS } from "../constants/timeControls";
 import "../styles/Play.css";
 
 const DIFFICULTIES = ["Easy", "Medium", "Hard"];
 
 export default function PlaySelect() {
-  const { subscribe } = useWebSocket();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    return subscribe((msg) => {
-      if (msg.type === "GAME_STARTED") navigate("/game");
-    });
-  }, [subscribe, navigate]);
 
   return (
     <div className="page">

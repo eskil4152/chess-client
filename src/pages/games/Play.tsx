@@ -3,49 +3,32 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useWebSocket } from "../../providers/WebSocketProvider";
 import joinQueue from "../../features/api/joinQueue";
 import leaveQueue from "../../features/api/leaveQueue";
-import getActiveGame from "../../features/api/getActiveGame";
 
 const DOTS = [".", "..", "..."];
 
 export default function Play() {
-  const { subscribe, connected } = useWebSocket();
+  const { subscribe } = useWebSocket();
   const navigate = useNavigate();
   const { state } = useLocation();
   const timeControl: string = state?.timeControl ?? "BLITZ_5_0";
   const [dotIndex, setDotIndex] = useState(0);
   const joinedRef = useRef(false);
-
-  useEffect(() => {
-    getActiveGame().then(({ status }) => {
-      if (status === 200) {
-        navigate("/game");
-        return;
-      }
-      joinQueue(timeControl).then((res) => {
-        if (res.status === 409) {
-          navigate("/game");
-          return;
-        }
-        joinedRef.current = true;
-      });
-    });
-    return () => {
-      void leaveQueue();
-    };
-  }, [navigate, timeControl]);
-
-  useEffect(() => {
-    if (!connected || !joinedRef.current) return;
-    getActiveGame().then(({ status }) => {
-      if (status === 200) navigate("/game");
-    });
-  }, [connected, navigate]);
+  const matchedRef = useRef(false);
 
   useEffect(() => {
     return subscribe((msg) => {
-      if (msg.type === "GAME_STARTED") navigate("/game");
+      if (msg.type === "GAME_STARTED") matchedRef.current = true;
     });
-  }, [subscribe, navigate]);
+  }, [subscribe]);
+
+  useEffect(() => {
+    joinQueue(timeControl).then((res) => {
+      if (res.ok) joinedRef.current = true;
+    });
+    return () => {
+      if (!matchedRef.current) void leaveQueue();
+    };
+  }, [timeControl]);
 
   useEffect(() => {
     const id = setInterval(

@@ -7,7 +7,7 @@ import "../styles/Game.css";
 type GameCardProps = {
   game: Chess;
   result: string | null;
-  color: "white" | "black";
+  color: "white" | "black" | null;
   whiteUsername: string;
   blackUsername: string;
   whiteElo: number;
@@ -58,16 +58,16 @@ export default function GameCard({
   onDraw,
   resign,
 }: GameCardProps) {
-  const isWhite = color === "white";
-  const playerUsername = isWhite ? whiteUsername : blackUsername;
-  const opponentUsername = isWhite ? blackUsername : whiteUsername;
-  const playerElo = isWhite ? whiteElo : blackElo;
-  const opponentElo = isWhite ? blackElo : whiteElo;
-  const playerEloChange = isWhite ? whiteEloChange : blackEloChange;
-  const opponentEloChange = isWhite ? blackEloChange : whiteEloChange;
-  const playerMs = isWhite ? whiteMs : blackMs;
-  const opponentMs = isWhite ? blackMs : whiteMs;
-  const opponentOffered = isWhite ? blackDrawOffer : whiteDrawOffer;
+  const isBlack = color === "black";
+  const bottomUsername = isBlack ? blackUsername : whiteUsername;
+  const topUsername = isBlack ? whiteUsername : blackUsername;
+  const bottomElo = isBlack ? blackElo : whiteElo;
+  const topElo = isBlack ? whiteElo : blackElo;
+  const bottomEloChange = isBlack ? blackEloChange : whiteEloChange;
+  const topEloChange = isBlack ? whiteEloChange : blackEloChange;
+  const bottomMs = isBlack ? blackMs : whiteMs;
+  const topMs = isBlack ? whiteMs : blackMs;
+  const opponentOffered = isBlack ? whiteDrawOffer : blackDrawOffer;
   const drawLabel = opponentOffered ? "Accept draw" : "Offer draw";
 
   const [dragOrigin, setDragOrigin] = useState<string | null>(null);
@@ -108,20 +108,18 @@ export default function GameCard({
         <span>
           <Link
             className="game-player-link"
-            to={`/user?username=${opponentUsername}`}
+            to={`/user?username=${topUsername}`}
           >
-            {opponentUsername}
+            {topUsername}
           </Link>{" "}
           -{" "}
-          {opponentEloChange !== null
-            ? opponentElo + opponentEloChange
-            : opponentElo}{" "}
-          {opponentEloChange !== null && (
-            <span>({formatEloChange(opponentEloChange)})</span>
+          {topEloChange !== null ? topElo + topEloChange : topElo}{" "}
+          {topEloChange !== null && (
+            <span>({formatEloChange(topEloChange)})</span>
           )}
         </span>
-        {opponentMs !== null && (
-          <span className="game-clock">{formatMs(opponentMs)}</span>
+        {topMs !== null && (
+          <span className="game-clock">{formatMs(topMs)}</span>
         )}
       </div>
 
@@ -129,7 +127,7 @@ export default function GameCard({
         {result && <p className="game-result">{result}</p>}
         <Chessboard
           position={game.fen()}
-          boardOrientation={color}
+          boardOrientation={color ?? "white"}
           onPieceDrop={onPieceDrop}
           onSquareClick={onSquareClick}
           onPieceDragBegin={(_piece, square) => setDragOrigin(square)}
@@ -143,27 +141,37 @@ export default function GameCard({
         <span>
           <Link
             className="game-player-link"
-            to={`/user?username=${playerUsername}`}
+            to={`/user?username=${bottomUsername}`}
           >
-            {playerUsername}
+            {bottomUsername}
           </Link>{" "}
-          - {playerEloChange !== null ? playerElo + playerEloChange : playerElo}{" "}
-          {playerEloChange !== null && (
-            <span>({formatEloChange(playerEloChange)})</span>
+          - {bottomEloChange !== null ? bottomElo + bottomEloChange : bottomElo}{" "}
+          {bottomEloChange !== null && (
+            <span>({formatEloChange(bottomEloChange)})</span>
           )}
         </span>
-        {playerMs !== null && (
-          <span className="game-clock">{formatMs(playerMs)}</span>
+        {bottomMs !== null && (
+          <span className="game-clock">{formatMs(bottomMs)}</span>
         )}
       </div>
 
       <div className="game-actions">
-        <button className="btn btn-danger" onClick={resign} disabled={!!result}>
-          Resign
-        </button>
-        <button className="btn" onClick={onDraw} disabled={!!result}>
-          {drawLabel}
-        </button>
+        {color ? (
+          <>
+            <button
+              className="btn btn-danger"
+              onClick={resign}
+              disabled={!!result}
+            >
+              Resign
+            </button>
+            <button className="btn" onClick={onDraw} disabled={!!result}>
+              {drawLabel}
+            </button>
+          </>
+        ) : (
+          <span className="label-upper">Spectating</span>
+        )}
       </div>
     </div>
   );
