@@ -11,4 +11,5 @@ export type UserDataType = {
   rapidGames: number;
   classicalElo: number;
   classicalGames: number;
+  activeGameId: string | null;
 };

@@ -32,6 +32,7 @@ function App() {
             <Route path="/friends" element={<Friends />} />
             <Route path="/play/bot/:difficulty" element={<PlayBot />} />
             <Route path="/game" element={<Game />} />
+            <Route path="/game/:gameId" element={<Game />} />
             <Route path="/user" element={<User />} />
             <Route path="/games/user" element={<GameHistory />} />
             <Route path="/games/:id" element={<GameReplay />} />

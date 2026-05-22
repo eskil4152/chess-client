@@ -6,20 +6,22 @@ import { WsMoveType } from "../../types/websocket/WsMoveType";
 import { WsGameEndedType } from "../../types/websocket/WsGameEndedType";
 import { GameStateType } from "../../types/http/GameStateType";
 import GameCard from "../../components/GameCard";
+import getMyActiveGame from "../../features/api/getMyActiveGame";
 import getActiveGame from "../../features/api/getActiveGame";
 import {
   playMoveSound,
   playCaptureSound,
   playCheckSound,
   playCheckmateSound,
-  playVictorySound,
-  playDefeatSound,
-  playDrawSound,
+  playGameOverSound,
 } from "../../utils/sounds";
+import { useParams } from "react-router-dom";
 
 export default function Game() {
   const { subscribe, sendJson, connected } = useWebSocket();
   const { user } = useAuth();
+
+  const { gameId } = useParams<{ gameId: string }>();
 
   const [gameState, setGameState] = useState<GameStateType | null>(null);
   const [game, setGame] = useState(new Chess());
@@ -39,7 +41,9 @@ export default function Game() {
   const color: "white" | "black" | null = gameState
     ? gameState.whiteId === user!.userId
       ? "white"
-      : "black"
+      : gameState.blackId === user!.userId
+        ? "black"
+        : null
     : null;
 
   const colorRef = useRef(color);
@@ -57,7 +61,9 @@ export default function Game() {
 
   useEffect(() => {
     if (!connected) return;
-    getActiveGame().then(({ status, data }) => {
+    const fetch = gameId ? getActiveGame(gameId) : getMyActiveGame();
+    fetch.then(({ status, data }) => {
+
       if (status !== 200 || !data) return;
       const state = data as GameStateType;
       const chess = new Chess();
@@ -116,18 +122,11 @@ export default function Game() {
         };
         setResult(
           status === "DRAW"
-            ? `Draw by ${endedBy.replaceAll("_", " ")}`
+            ? `Draw by ${endedBy.replace("_", " ")}`
             : `${label[status] ?? "Game over"} by ${endedBy}`,
         );
         setEndElos({ white: whiteElo, black: blackElo });
-        const c = colorRef.current;
-        if (status === "DRAW") playDrawSound();
-        else if (
-          (status === "WHITE_WIN" && c === "white") ||
-          (status === "BLACK_WIN" && c === "black")
-        )
-          playVictorySound();
-        else playDefeatSound();
+        playGameOverSound();
       }
     });
   }, [subscribe]);
@@ -215,10 +214,12 @@ export default function Game() {
         <p className="game-status-msg">Connecting…</p>
       </div>
     );
-  if (!gameState || !color)
+  if (!gameState)
     return (
       <div className="page">
-        <p className="game-status-msg">You are not currently in a game</p>
+        <p className="game-status-msg">
+          {gameId ? "Game not found" : "You are not currently in a game"}
+        </p>
       </div>
     );
 
