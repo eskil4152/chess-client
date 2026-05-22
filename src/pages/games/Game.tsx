@@ -13,9 +13,7 @@ import {
   playCaptureSound,
   playCheckSound,
   playCheckmateSound,
-  playVictorySound,
-  playDefeatSound,
-  playDrawSound,
+  playGameOverSound,
 } from "../../utils/sounds";
 import { useParams } from "react-router-dom";
 
@@ -43,7 +41,9 @@ export default function Game() {
   const color: "white" | "black" | null = gameState
     ? gameState.whiteId === user!.userId
       ? "white"
-      : "black"
+      : gameState.blackId === user!.userId
+        ? "black"
+        : null
     : null;
 
   const colorRef = useRef(color);
@@ -126,14 +126,7 @@ export default function Game() {
             : `${label[status] ?? "Game over"} by ${endedBy}`,
         );
         setEndElos({ white: whiteElo, black: blackElo });
-        const c = colorRef.current;
-        if (status === "DRAW") playDrawSound();
-        else if (
-          (status === "WHITE_WIN" && c === "white") ||
-          (status === "BLACK_WIN" && c === "black")
-        )
-          playVictorySound();
-        else playDefeatSound();
+        playGameOverSound();
       }
     });
   }, [subscribe]);
