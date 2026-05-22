@@ -158,6 +158,10 @@ export default function User() {
           <span>{responseUser.classicalGames}</span>
         </div>
 
+        {
+          responseUser.activeGameId != null ? <Link to={"/game/"+responseUser.activeGameId}>Active game</Link> : "Player is not playing"
+        }
+
         {responseUser.bio && <p className="profile-bio">{responseUser.bio}</p>}
         <div className="profile-actions">
           <Link
