@@ -7,6 +7,7 @@ type ButtonProps = {
   variant?: "default" | "danger" | "pill";
   disabled?: boolean;
   fullWidth?: boolean;
+  active?: boolean;
 };
 
 export default function Button({
@@ -16,12 +17,14 @@ export default function Button({
   variant = "default",
   disabled,
   fullWidth,
+  active,
 }: ButtonProps) {
   const classes = [
     "btn",
     variant === "danger" ? "btn-danger" : "",
     variant === "pill" ? "btn-pill" : "",
     fullWidth ? "btn-full" : "",
+    active ? "btn-active" : "",
   ]
     .filter(Boolean)
     .join(" ");

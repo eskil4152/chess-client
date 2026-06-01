@@ -16,6 +16,7 @@ export default function Login() {
   const [error, setError] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
   if (user) return <Navigate to="/" replace />;
 
@@ -70,6 +71,14 @@ export default function Login() {
           <Button type="submit" variant="pill" disabled={loading} fullWidth>
             {loading ? "Logging in…" : "Log In"}
           </Button>
+          <label className="auth-remember">
+            <input
+              type="checkbox"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+            />
+            Remember me
+          </label>
         </form>
 
         {error && <p className="msg-error">{error}</p>}
