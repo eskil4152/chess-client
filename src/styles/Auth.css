@@ -50,3 +50,19 @@
 .btn-full {
   width: 100%;
 }
+
+.auth-remember {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  opacity: 0.85;
+}
+
+.auth-remember input[type="checkbox"] {
+  accent-color: var(--accent-brass);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
