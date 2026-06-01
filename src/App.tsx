@@ -14,6 +14,7 @@ import Header from "./components/Header";
 import LockedRoute from "./components/LockedRoute";
 import WebSocketProvider from "./providers/WebSocketProvider";
 import Friends from "./pages/friends/Friends";
+import Leaderboard from "./pages/Leaderboard";
 import ServerOffline from "./pages/ServerOffline";
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
             <Route path="/user" element={<User />} />
             <Route path="/games/user" element={<GameHistory />} />
             <Route path="/games/:id" element={<GameReplay />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
           </Route>
         </Route>
       </Routes>
