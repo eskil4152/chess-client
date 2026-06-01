@@ -20,6 +20,7 @@ export default function Header() {
       </div>
 
       <div className="headerRight">
+        <Link to="/leaderboard">Leaderboard</Link>
         <Link to="/friends">Friends</Link>
         <Link to={`/user?username=${user.username}`}>{user.username}</Link>
       </div>

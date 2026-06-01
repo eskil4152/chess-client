@@ -156,6 +156,18 @@ export default function User() {
           <span>{responseUser.blitzGames}</span>
           <span>{responseUser.rapidGames}</span>
           <span>{responseUser.classicalGames}</span>
+
+          <span>Wins</span>
+          <span>{responseUser.bulletWins}</span>
+          <span>{responseUser.blitzWins}</span>
+          <span>{responseUser.rapidWins}</span>
+          <span>{responseUser.classicalWins}</span>
+
+          <span>Win %</span>
+          <span>{responseUser.bulletWinPercentage}%</span>
+          <span>{responseUser.blitzWinPercentage}%</span>
+          <span>{responseUser.rapidWinPercentage}%</span>
+          <span>{responseUser.classicalWinPercentage}%</span>
         </div>
 
         {!isUser && (
