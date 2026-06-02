@@ -36,7 +36,7 @@ export default function GamePreviewCard({
           <span>Black: {black}</span>
         </div>
         <span className="game-card-result">{result}</span>
-        <span>{timeControl}</span>
+        <span className="game-card-time-control">{timeControl?.replace('_', ' ').replace('_', '+')}</span>
       </div>
     </Link>
   );

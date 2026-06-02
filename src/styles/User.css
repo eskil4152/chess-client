@@ -28,7 +28,9 @@
 
 .profile-elo-grid span:nth-child(-n + 5),
 .profile-elo-grid span:nth-child(6),
-.profile-elo-grid span:nth-child(11) {
+.profile-elo-grid span:nth-child(11),
+.profile-elo-grid span:nth-child(16),
+.profile-elo-grid span:nth-child(21) {
   font-weight: 600;
   opacity: 0.65;
   font-size: 0.8rem;
@@ -141,4 +143,11 @@
 .game-card-result {
   font-weight: 600;
   opacity: 0.9;
+}
+
+.game-card-time-control {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
