@@ -3,21 +3,26 @@ export type UserDataType = {
   bio?: string;
   avatarUrl: string | null;
   isFriend: boolean;
+
   blitzElo: number;
   blitzGames: number;
   blitzWins: number;
   blitzWinPercentage: number;
+
   bulletElo: number;
   bulletGames: number;
   bulletWins: number;
   bulletWinPercentage: number;
+
   rapidElo: number;
   rapidGames: number;
   rapidWins: number;
   rapidWinPercentage: number;
+
   classicalElo: number;
   classicalGames: number;
   classicalWins: number;
   classicalWinPercentage: number;
+
   activeGameId: string | null;
 };

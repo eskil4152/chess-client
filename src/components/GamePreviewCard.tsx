@@ -7,6 +7,7 @@ type GamePreviewCardProps = {
   black: string;
   status: GameStatus;
   user: string;
+  timeControl: string;
 };
 
 export default function GamePreviewCard({
@@ -15,6 +16,7 @@ export default function GamePreviewCard({
   black,
   status,
   user,
+  timeControl
 }: GamePreviewCardProps) {
   let result;
 
@@ -34,6 +36,7 @@ export default function GamePreviewCard({
           <span>Black: {black}</span>
         </div>
         <span className="game-card-result">{result}</span>
+        <span>{timeControl}</span>
       </div>
     </Link>
   );

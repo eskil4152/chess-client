@@ -67,6 +67,7 @@ export default function GameHistory() {
                 black={game.blackUsername}
                 status={game.status}
                 user={username}
+                timeControl={game.timeControl}
               />
             ))
           : "No games yet."}
