@@ -20,6 +20,7 @@ export default function User() {
   const username = searchParams.get("username");
 
   const [editOpen, setEditOpen] = useState(false);
+  const [friendRequestSent, setFriendRequestSent] = useState(false);
   const [bioInput, setBioInput] = useState("");
   const [avatarInput, setAvatarInput] = useState("");
   const [oldPassword, setOldPassword] = useState("");
@@ -55,8 +56,10 @@ export default function User() {
   async function handleFriend() {
     if (isFriend) {
       await removeFriend(username!);
+      setLocalUser({ ...responseUser, isFriend: false });
     } else {
-      await addFriend(username!);
+      const res = await addFriend(username!);
+      if (res.status < 400) setFriendRequestSent(true);
     }
   }
 
@@ -265,9 +268,22 @@ export default function User() {
       )}
 
       {!isUser && (
-        <button className="btn btn-pill" onClick={handleFriend}>
-          {isFriend ? "Remove friend" : "Add friend"}
-        </button>
+        <div className="profile-friend-actions">
+          <button
+            className="btn btn-pill"
+            onClick={handleFriend}
+            disabled={friendRequestSent}
+          >
+            {isFriend
+              ? "Remove friend"
+              : friendRequestSent
+              ? "Request sent"
+              : "Send friend request"}
+          </button>
+          {friendRequestSent && (
+            <p className="msg-success">Friend request sent!</p>
+          )}
+        </div>
       )}
 
       {isUser && (
