@@ -10,6 +10,7 @@ type FriendCardProps = {
   username: string;
   bio: string;
   avatar: string;
+  isOnline?: boolean;
 };
 
 export default function FriendCard({
@@ -17,6 +18,7 @@ export default function FriendCard({
   username,
   bio,
   avatar,
+  isOnline,
 }: FriendCardProps) {
   const navigate = useNavigate();
   const { sendChallenge, outgoing } = useChallenge();
@@ -41,11 +43,14 @@ export default function FriendCard({
       className="card-sm friend-card"
       onClick={() => navigate(`/user?username=${username}`)}
     >
-      <img
-        src={avatar || "/default_profile.png"}
-        alt={username}
-        className="avatar friend-card-avatar"
-      />
+      <div className="friend-card-avatar-wrapper">
+        <img
+          src={avatar || "/default_profile.png"}
+          alt={username}
+          className="avatar friend-card-avatar"
+        />
+        {isOnline && <span className="friend-online-dot" />}
+      </div>
       <div className="friend-card-info">
         <span className="friend-card-username">{username}</span>
         {bio && <span className="friend-card-bio">{bio}</span>}

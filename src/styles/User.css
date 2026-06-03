@@ -88,6 +88,13 @@
   width: 100%;
 }
 
+.profile-friend-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
 .profile-avatar {
   width: 80px;
   height: 80px;

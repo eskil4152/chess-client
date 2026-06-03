@@ -62,3 +62,20 @@
   border-radius: 6px;
   transition: background 0.15s ease;
 }
+
+.header-friends-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.header-request-badge {
+  background: var(--accent-brass);
+  color: var(--bg-secondary);
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 1px 6px;
+  line-height: 1.4;
+}

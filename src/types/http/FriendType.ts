@@ -3,4 +3,5 @@ export type FriendType = {
   username: string;
   bio: string;
   avatarUrl: string;
+  isOnline: boolean;
 };

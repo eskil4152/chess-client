@@ -9,6 +9,9 @@ import React, {
 import { Outlet, useNavigate } from "react-router-dom";
 import { ChallengeProvider } from "./ChallengeProvider";
 import "../styles/Header.css";
+import getFriendRequests from "../features/api/getFriendRequests";
+import { FriendRequestsDTO } from "../types/http/FriendRequestType";
+import Header from "../components/Header";
 
 function StatusBar({ connected }: { connected: boolean }) {
   return (
@@ -27,6 +30,8 @@ type WebSocketContextType = {
   connected: boolean;
   sendJson: (payload: unknown) => boolean;
   subscribe: (listener: (event: WsMessage) => void) => () => void;
+  pendingRequestCount: number;
+  clearPendingRequests: () => void;
 };
 
 const WebSocketContext = createContext<WebSocketContextType | null>(null);
@@ -39,6 +44,7 @@ export default function WebSocketProvider() {
   const reconnectRef = useRef(0);
 
   const [connected, setConnected] = useState(false);
+  const [pendingRequestCount, setPendingRequestCount] = useState(0);
 
   const wsUrl = import.meta.env.VITE_WS_URL;
 
@@ -50,6 +56,15 @@ export default function WebSocketProvider() {
   const subscribe = useCallback((listener: (event: WsMessage) => void) => {
     listenersRef.current.add(listener);
     return () => listenersRef.current.delete(listener);
+  }, []);
+
+  const clearPendingRequests = useCallback(() => setPendingRequestCount(0), []);
+
+  useEffect(() => {
+    getFriendRequests().then((res) => {
+      const dto = res?.data as FriendRequestsDTO | undefined;
+      setPendingRequestCount(dto?.friendRequests?.length ?? 0);
+    }).catch(() => {});
   }, []);
 
   const sendJson = useCallback((payload: unknown): boolean => {
@@ -86,6 +101,8 @@ export default function WebSocketProvider() {
           if (data.type === "ERROR" && data.code === 401)
             navigateRef.current("/login");
           if (data.type === "GAME_STARTED") navigateRef.current("/game");
+          if (data.type === "FRIEND_REQUEST")
+            setPendingRequestCount((c) => c + 1);
           listenersRef.current.forEach((l) => l(data));
         } catch {}
       };
@@ -115,9 +132,10 @@ export default function WebSocketProvider() {
   }, [wsUrl]);
 
   return (
-    <WebSocketContext.Provider value={{ connected, sendJson, subscribe }}>
+    <WebSocketContext.Provider value={{ connected, sendJson, subscribe, pendingRequestCount, clearPendingRequests }}>
       <StatusBar connected={connected} />
       <ChallengeProvider>
+        <Header />
         <Outlet />
       </ChallengeProvider>
     </WebSocketContext.Provider>

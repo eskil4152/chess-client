@@ -6,7 +6,7 @@ import GamePreviewCard from "../../components/GamePreviewCard";
 import "../../styles/User.css";
 
 export default function GameHistory() {
-  const [searchParams] = useSearchParams();
+const [searchParams] = useSearchParams();
   const username = searchParams.get("username");
 
   const [games, setGames] = useState<GamePreviewType[]>([]);

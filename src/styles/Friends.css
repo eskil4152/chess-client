@@ -32,10 +32,40 @@
   gap: 14px;
 }
 
+.friend-card-avatar-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
 .friend-card-avatar {
   width: 44px;
   height: 44px;
-  flex-shrink: 0;
+}
+
+.friend-online-dot {
+  position: absolute;
+  bottom: 1px;
+  right: 1px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #22c55e;
+  border: 2px solid var(--bg-secondary);
+}
+
+.friend-request-card {
+  gap: 14px;
+}
+
+.friend-request-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.friend-request-actions {
+  display: flex;
+  gap: 8px;
 }
 
 .friend-card-avatar-placeholder {
