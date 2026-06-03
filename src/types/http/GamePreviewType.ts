@@ -5,4 +5,5 @@ export type GamePreviewType = {
   whiteUsername: string;
   blackUsername: string;
   status: GameStatus;
+  timeControl: string;
 };
