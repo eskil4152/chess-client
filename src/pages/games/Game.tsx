@@ -26,6 +26,7 @@ export default function Game() {
   const [gameState, setGameState] = useState<GameStateType | null>(null);
   const [game, setGame] = useState(new Chess());
   const [result, setResult] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
   const [endElos, setEndElos] = useState<{
     white: number;
     black: number;
@@ -63,8 +64,11 @@ export default function Game() {
     if (!connected) return;
     const fetch = gameId ? getActiveGame(gameId) : getMyActiveGame();
     fetch.then(({ status, data }) => {
-
-      if (status !== 200 || !data) return;
+      if (status === 202) return;
+      if (status !== 200 || !data) {
+        setLoading(false);
+        return;
+      }
       const state = data as GameStateType;
       const chess = new Chess();
       state.moves.forEach((m) => {
@@ -81,11 +85,32 @@ export default function Game() {
       });
       setWhiteMs(state.whiteRemainingMs ?? null);
       setBlackMs(state.blackRemainingMs ?? null);
+      setLoading(false);
     });
   }, [connected]);
 
   useEffect(() => {
     return subscribe((msg) => {
+      if (msg.type === "GAME_STATE") {
+        const state = msg as unknown as GameStateType;
+        const chess = new Chess();
+        state.moves.forEach((m) => {
+          try {
+            chess.move(m);
+          } catch {}
+        });
+        setGameState(state);
+        setGame(chess);
+        setResult(null);
+        setDrawOffers({
+          white: state.whiteDrawOffer,
+          black: state.blackDrawOffer,
+        });
+        setWhiteMs(state.whiteRemainingMs ?? null);
+        setBlackMs(state.blackRemainingMs ?? null);
+        setLoading(false);
+      }
+
       if (msg.type === "MOVE") {
         const { move, increment: inc, whiteMove } = msg as WsMoveType;
         const next = new Chess(gameRef.current.fen());
@@ -218,7 +243,11 @@ export default function Game() {
     return (
       <div className="page">
         <p className="game-status-msg">
-          {gameId ? "Game not found" : "You are not currently in a game"}
+          {loading
+            ? "Loading…"
+            : gameId
+              ? "Game not found"
+              : "You are not currently in a game"}
         </p>
       </div>
     );
